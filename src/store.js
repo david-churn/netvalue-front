@@ -4,6 +4,8 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+// complains when store data updated outside mutations. Remove for production.
+  strict: true,
   state: {
 //  type, symbol, description, apr, payment, shares, price, amount
     assets: [
@@ -98,10 +100,10 @@ export default new Vuex.Store({
     allBonds(state) {
       return state.assets.filter(asset => asset.type==="bond");
     },
-    allMFund(state) {
+    allFunds(state) {
       return state.assets.filter(asset => asset.type==="fund");
     },
-    allOther(state) {
+    allOthers(state) {
       return state.assets.filter(asset => asset.type==="other");
     },
     allDebts(state) {
@@ -110,10 +112,10 @@ export default new Vuex.Store({
   },
   actions: {
     insertAsset(context,assetObj) {
-      context.commit('insertAsset', assetObj)
+      context.commit('insertAsset', assetObj);
     },
     insertDebt(context,debtObj) {
-      context.commit('insertDebt', debtObj)
+      context.commit('insertDebt', debtObj);
     }
   },
   mutations: {
@@ -121,7 +123,7 @@ export default new Vuex.Store({
       state.assets.push(assetObj);
     },
     insertDebt(state,debtObj) {
-      state.assets.push(debtObj);
+      state.debts.push(debtObj);
     }
   }
 })

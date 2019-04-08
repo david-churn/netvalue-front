@@ -1,13 +1,15 @@
 <template>
   <div class="netvalue">
-    <h2>{{ totalAmt.format(2) }} Net Value </h2>
-    <h2>{{ assetAmt.format(2) }} Assets</h2>
+    <h2>{{ totalAmt.toDecFormat(2) }} Net Value </h2>
+    <button type="button">save work</button>
+    <button type="button">reset to saved</button>
+    <h2>{{ assetAmt.toDecFormat(2) }} Assets</h2>
     <aSavings/>
     <aFunds/>
     <aStocks/>
     <aBonds/>
     <aOthers/>
-    <h2>{{ debtAmt.format(2) }} Debts</h2>
+    <h2>{{ debtAmt.toDecFormat(2) }} Debts</h2>
     <dLoans/>
   </div>
 </template>

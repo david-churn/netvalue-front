@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <navCmp/>
-    <h1>Your Simple Net Value</h1>
-    <!-- <p>{{ moment().format('MMMM Do YYYY') }}</p> -->
+    <h1>{{ title }}</h1>
+    <p>{{ todayStr }}</p>
     <router-view/>
   </div>
 </template>
@@ -17,7 +17,16 @@ const moment = require('moment');
 export default {
   name: "app",
   components: {
-    navCmp }
+    navCmp },
+  data: function () {
+    return {
+      title: 'Your Simple Net Value',
+      todayStr: ''
+    }
+  },
+  created() {
+    this.todayStr = moment().format('MMMM Do YYYY');
+  }
 }
 </script>
 
@@ -49,13 +58,24 @@ $greenish: #c5efcb;
 h1 {
   text-align: center;
 }
+body {
+  margin: 1%;
+}
+input {
+  width: 90%;
+}
+.amt {
+  text-align: right;
+}
 .row {
   display: flex;
+  margin: 1%;
 }
 .col-amount {
-  flex: 1;
+  flex: 2;
   min-width: 5em;
   text-align: right;
+  margin: 0 1em;
 }
 .flex1 {
   flex: 1;
@@ -74,5 +94,23 @@ h1 {
 }
 .flex6 {
   flex: 6;
+}
+.flex7 {
+  flex: 7;
+}
+.flex8 {
+  flex: 8;
+}
+.flex9 {
+  flex: 9;
+}
+.flex10 {
+  flex: 10;
+}
+.flex11 {
+  flex: 11;
+}
+.flex12 {
+  flex: 12;
 }
 </style>
