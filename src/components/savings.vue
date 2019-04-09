@@ -1,24 +1,47 @@
 <template lang="html">
   <div class="savings">
     <h3 class="row">
-      <div class="col-amount">{{ subtotal.toDecFormat(2) }}</div>
-      <div class="flex10">{{ title }}</div></h3>
+      <div class="col-amount">{{ subtotalAmt }}</div>
+      <div class="flex7">{{ title }}</div>
+      <div class="col-amount">{{ subtotalContrib }}</div>
+      <div class="flex1"></div>
+    </h3>
     <div class="row">
       <div class="col-amount">Balance</div>
       <div class="flex6">Description</div>
       <div class="flex1">APR</div>
-      <div class="flex3">Monthly Contribution</div>
+      <div class="flex2">Monthly Contribution</div>
+      <div class="flex1">action</div>
     </div>
     <div class="row"
-      v-for="(asset,index) in allSavings" :key="index">
-      <div class="col-amount"><input v-model="asset.amount" type="number" step=".01" class="amt"></div>
-      <div class="flex6"><input v-model="asset.description" type="text"></div>
-      <div class="flex1"><input v-model="asset.apr" type="number" step=".0001" class="amt"></div>
-      <div class="flex3"><input v-model="asset.payment" type="number" step=".01" class="amt"></div>
+      v-for="(asset,index) in savingsAssets" :key="index">
+      <div class="col-amount">
+        <input type="number" step=".01" min="0" class="amt"
+          :value="asset.amount"
+          @input="updateRow($event, asset,'amount')">
+      </div>
+      <div class="flex6">
+        <input type="text"
+          :value="asset.description"
+          @input="updateRow($event, asset, 'description')">
+      </div>
+      <div class="flex1">
+        <input type="number" step=".0001" min="0" class="amt"
+          :value="asset.apr"
+          @input="updateRow($event, asset, 'apr')">
+      </div>
+      <div class="col-amount">
+        <input type="number" step=".01" min="0" class="amt"
+          :value="asset.payment"
+          @input="updateRow($event, asset, 'payment')">
+      </div>
+      <div class="flex1">
+        <button type="button" @click="deleteRow(asset)">remove</button>
+      </div>
     </div>
     <div class="row">
       <button type="button" @click="addRow">Add Savings Account</button>
-      <button type="button" @click="allSavings">Reset Savings</button>
+      <!-- <button type="button" @click="?!?">Reset Savings</button> -->
     </div>
   </div>
 </template>
@@ -30,26 +53,60 @@ export default {
   name: 'savings',
   data: function () {
     return {
+//  tempId is a unique number for each asset component.  Prevents duplicate tempId
+//  between the components.  All components must subtract tempId by 1000 in addRow method.
+      tempId: -1,
       title: 'Savings and Checking',
-      subtotal: 20200,
+      type: 'saving',
+      subtotal: 99,
+      assetArr : []
     }
   },
   computed: {
     subtotalAmt: function () {
-      return -1
+      return this.savingsAssets
+        .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
+        .reduce((total, amount) => total + amount)
+        .toDecFormat(2);
     },
-    ...mapGetters(['allSavings'])
+    subtotalContrib: function() {
+      return this.savingsAssets
+        .map(asset => Number.isFinite(Number(asset.payment)) ? Number(asset.payment) : 0)
+        .reduce((total, amount) => total + amount)
+        .toDecFormat(2);
+    },
+    savingsAssets: function () {
+      return this.typeAssets('saving');
+    },
+    ...mapGetters(['typeAssets'])
   },
   methods: {
     addRow() {
+      this.tempId-=1000;
       let newSavings = {
-        type: 'saving',
+        id: this.tempId,
+        type: this.type,
         amount: 0,
-        description: 'Savings',
+        description: 'Your savings',
         apr: 0,
         payment: 0
       };
       this.$store.dispatch('insertAsset', newSavings);
+    },
+    deleteRow(asset) {
+      this.$store.dispatch('deleteAsset', asset.id);
+    },
+    updateRow(e,asset,propStr) {
+      let updAsset = {
+        id: asset.id,
+        type: asset.type,
+        amount: asset.amount,
+        description: asset.description,
+        apr: asset.apr,
+        payment: asset.payment
+      };
+      updAsset[propStr] = e.srcElement.value;
+      this.$store.dispatch('updateAsset', updAsset);
     }
   }
 }
