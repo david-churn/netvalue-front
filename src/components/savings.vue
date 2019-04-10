@@ -11,29 +11,29 @@
       <div class="flex6">Description</div>
       <div class="flex1">APR</div>
       <div class="flex2">Monthly Contribution</div>
-      <div class="flex1">action</div>
+      <div class="flex1">Action</div>
     </div>
     <div class="row"
       v-for="(asset,index) in savingsAssets" :key="index">
       <div class="col-amount">
         <input type="number" step=".01" min="0" class="amt"
           :value="asset.amount"
-          @input="updateRow($event, asset,'amount')">
+          @focusout="updateRow($event, asset,'amount')">
       </div>
       <div class="flex6">
         <input type="text"
           :value="asset.description"
-          @input="updateRow($event, asset, 'description')">
+          @focusout="updateRow($event, asset, 'description')">
       </div>
       <div class="flex1">
         <input type="number" step=".0001" min="0" class="amt"
           :value="asset.apr"
-          @input="updateRow($event, asset, 'apr')">
+          @focusout="updateRow($event, asset, 'apr')">
       </div>
       <div class="col-amount">
         <input type="number" step=".01" min="0" class="amt"
           :value="asset.payment"
-          @input="updateRow($event, asset, 'payment')">
+          @focusout="updateRow($event, asset, 'payment')">
       </div>
       <div class="flex1">
         <button type="button" @click="deleteRow(asset)">remove</button>
@@ -41,7 +41,6 @@
     </div>
     <div class="row">
       <button type="button" @click="addRow">Add Savings Account</button>
-      <!-- <button type="button" @click="?!?">Reset Savings</button> -->
     </div>
   </div>
 </template>
@@ -57,9 +56,7 @@ export default {
 //  between the components.  All components must subtract tempId by 1000 in addRow method.
       tempId: -1,
       title: 'Savings and Checking',
-      type: 'saving',
-      subtotal: 99,
-      assetArr : []
+      type: 'saving'
     }
   },
   computed: {
@@ -72,11 +69,11 @@ export default {
     subtotalContrib: function() {
       return this.savingsAssets
         .map(asset => Number.isFinite(Number(asset.payment)) ? Number(asset.payment) : 0)
-        .reduce((total, amount) => total + amount)
+        .reduce((total, payment) => total + payment)
         .toDecFormat(2);
     },
     savingsAssets: function () {
-      return this.typeAssets('saving');
+      return this.typeAssets(this.type);
     },
     ...mapGetters(['typeAssets'])
   },

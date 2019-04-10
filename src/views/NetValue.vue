@@ -1,15 +1,30 @@
 <template>
   <div class="netvalue">
-    <h2>{{ totalAmt.toDecFormat(2) }} Net Value </h2>
-    <button type="button">save work</button>
-    <button type="button">reset to saved</button>
-    <h2>{{ assetAmt.toDecFormat(2) }} Assets</h2>
+    <h2 class="row">
+      <div class="col-amount">{{ totalAmt }}</div>
+      <div class="flex10">Net Value</div>
+    </h2>
+    <div class="row">
+      <div class="flex11">
+        <button type="button">Save</button>
+      </div>
+      <div class="flex1">
+        <button type="button">Reset</button>
+      </div>
+    </div>
+    <h2 class="row">
+      <div class="col-amount">{{ subtotalAssetsAmt }}</div>
+      <div class="flex10">Assets</div>
+    </h2>
     <aSavings/>
     <aFunds/>
     <aStocks/>
     <aBonds/>
     <aOthers/>
-    <h2>{{ debtAmt.toDecFormat(2) }} Debts</h2>
+    <h2 class="row">
+      <div class="col-amount">{{ subtotalDebtsAmt }}</div>
+      <div class="flex10">Debts</div>
+    </h2>
     <dLoans/>
   </div>
 </template>
@@ -36,13 +51,28 @@ export default {
 
   data: function () {
     return {
-      totalAmt: 0.89,
-      assetAmt: 1234567890.12,
-      debtAmt: 0
+      totalAssets: 0,
+      totalDebts: 0
     }
   },
-  computed: mapGetters([
-    'allAssets', 'allDebts'])
+  computed: {
+    subtotalAssetsAmt: function () {
+      return this.activeAssets
+        .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
+        .reduce((total, amount) => total + amount)
+        .toDecFormat(2);
+    },
+    subtotalDebtsAmt: function () {
+      return this.activeDebts
+        .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
+        .reduce((total, amount) => total + amount)
+        .toDecFormat(2);
+    },
+    totalAmt: function () {
+      return Number(this.totalAssets - this.totalDebts).toDecFormat(2);
+    },
+    ...mapGetters(['activeAssets', 'activeDebts'])
+  }
 }
 
 </script>

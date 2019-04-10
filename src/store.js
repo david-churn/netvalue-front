@@ -8,7 +8,7 @@ export default new Vuex.Store({
 // complains when store data updated outside mutations. Remove for production.
   strict: true,
   state: {
-//  type, symbol, description, apr, payment, shares, price, amount
+//  id, type, symbol, description, apr, payment, shares, price, amount
     assets: [
       {
         id: 2
@@ -73,7 +73,7 @@ export default new Vuex.Store({
       , amount: 14238.75
       }
   ],
-//  type, description, apr, payment, amount
+//  id, type, description, apr, payment, amount
     debts: [
       {
         id: 29
@@ -85,7 +85,7 @@ export default new Vuex.Store({
       },
       {
         id: 31
-      , type: "loan"
+      , type: 'loan'
       , description: 'car loan'
       , apr: 0.05
       , payment: 300
@@ -93,21 +93,23 @@ export default new Vuex.Store({
       },
       {
         id: 37
-      , type: "card"
+      , type: 'loan'
       , description: 'VISA'
       , apr: 0.18
       , payment: 300
       , amount: 6700
       }
-    ]
+    ],
+    deleteStr: 'delete'
   },
   getters: {
-    allAssets(state) {
+    activeAssets(state) {
       return state.assets
+        .filter(asset => asset.type !== state.deleteStr);
     },
     typeAssets: (state) => (whichType) => {
       return state.assets
-        .filter(asset => asset.type===whichType);
+        .filter(asset => asset.type === whichType);
     },
     allStocks(state) {
       return state.assets.filter(asset => asset.type==="stock");
@@ -118,12 +120,14 @@ export default new Vuex.Store({
     allFunds(state) {
       return state.assets.filter(asset => asset.type==="fund");
     },
-    allOthers(state) {
-      return state.assets.filter(asset => asset.type==="other");
+    activeDebts(state) {
+      return state.debts
+        .filter(debt => debt.type !== state.deleteStr);
     },
-    allDebts(state) {
-      return state.debts;
-    }
+    typeDebts: (state) => (whichType) => {
+      return state.debts
+        .filter(debt => debt.type === whichType);
+    },
   },
   actions: {
     deleteAsset(context,id) {
@@ -135,28 +139,46 @@ export default new Vuex.Store({
     updateAsset(context,assetObj) {
       context.commit('updateAsset', assetObj);
     },
+    deleteDebt(context,id) {
+      context.commit('deleteDebt', id);
+    },
     insertDebt(context,debtObj) {
       context.commit('insertDebt', debtObj);
+    },
+    updateDebt(context,debtObj) {
+      context.commit('updateDebt', debtObj);
     }
   },
   mutations: {
     deleteAsset(state,delID) {
-      console.log(`delete ID=${delID}`);
       let assetIdx = state.assets.map(asset => asset.id ).indexOf(delID);
-      state.assets[assetIdx].type = 'delete';
+      state.assets[assetIdx].type = state.deleteStr;
     },
     insertAsset(state,assetObj) {
       state.assets.push(assetObj);
     },
     updateAsset(state,updateObj) {
-      let assetIdx = _.findIndex(state.assets, obj => obj.id===updateObj.id);
+      let assetIdx = _.findIndex(state.assets, obj => obj.id === updateObj.id);
+      console.log(`index=${assetIdx}`,updateObj);
 //! remove the if for production
-      if (assetIdx > 0) {
+      if (assetIdx >= 0) {
         state.assets.splice(assetIdx,1,updateObj);
       }
     },
+    deleteDebt(state,delID) {
+      let debtIdx = state.debts.map(debt => debt.id ).indexOf(delID);
+      state.debts[debtIdx].type = state.deleteStr;
+    },
     insertDebt(state,debtObj) {
       state.debts.push(debtObj);
+    },
+    updateDebt(state,updateObj) {
+      let debtIdx = _.findIndex(state.debts, obj => obj.id === updateObj.id);
+      console.log(`index=${debtIdx}`,updateObj);
+//! remove the if for production
+      if (debtIdx >= 0) {
+        state.debts.splice(debtIdx,1,updateObj);
+      }
     }
   }
 })
