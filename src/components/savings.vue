@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="row">
-      <button type="button" @click="addRow">Add Savings Account</button>
+      <button type="button" @click="addRow">Add Savings</button>
     </div>
   </div>
 </template>

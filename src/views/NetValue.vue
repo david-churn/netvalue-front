@@ -17,9 +17,7 @@
       <div class="flex10">Assets</div>
     </h2>
     <aSavings/>
-    <aFunds/>
     <aStocks/>
-    <aBonds/>
     <aOthers/>
     <h2 class="row">
       <div class="col-amount">{{ subtotalDebtsAmt }}</div>
@@ -31,8 +29,6 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import aBonds from '../components/bonds.vue';
-import aFunds from '../components/funds.vue';
 import aOthers from '../components/others.vue';
 import aSavings from '../components/savings.vue';
 import aStocks from '../components/stocks.vue';
@@ -42,9 +38,7 @@ export default {
   name: 'NetValue',
   components: {
     aSavings,
-    aBonds,
     aStocks,
-    aFunds,
     aOthers,
     dLoans
   },

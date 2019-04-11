@@ -26,7 +26,7 @@ export default new Vuex.Store({
       },
       {
         id: 5
-      , type: "saving"
+      , type: 'saving'
       , description: 'Bank Checking'
       , apr: 0.001
       , amount: 20000
@@ -34,31 +34,13 @@ export default new Vuex.Store({
       {
         id: 7
       , type: 'stock'
+      , amount: 3002.27
       , symbol: 'UHG'
-      , description: "United Healthcare Group"
-      , shares: 15.4321
-      },
-      {
-        id: 11
-      , type: 'bond'
-      , symbol: "USSB"
-      , description: "United States Savings Bond"
-      , apr: .02
-      , amount: 2000
-      },
-      {
-        id: 13
-      , type: 'bond'
-      , symbol: 'KCI'
-      , description: "KC MO Airport"
-      , payment: 100
-      },
-      {
-        id: 17
-      , type: 'fund'
-      , symbol: 'VWIA'
-      , description: 'IRA from 401(k)'
-      , shares: 50000
+      , description: 'Her Stock'
+      , shares: 15.0001
+      , payment: 0
+      , price: 200.15
+      , company: 'United Healthcare Group'
       },
       {
         id: 19
