@@ -19,38 +19,40 @@
       <div class="col-amount">Price</div>
       <div class="flex8">Company Name</div>
     </div>
-    <div
-      v-for="(asset,index) in stocksAssets" :key="index">
-      <div class="row">
-        <div class="col-amount">{{ asset.amount }}</div>
-        <div class="col-amount">
-          <input type="number" step=".000001" class="amt"
-            :value="asset.shares"
-            @focusout="updateRow($event,asset,'shares')">
+    <div v-if="stocksAssets.length">
+      <div
+        v-for="(asset,index) in stocksAssets" :key="index">
+        <div class="row">
+          <div class="col-amount">{{ asset.amount }}</div>
+          <div class="col-amount">
+            <input type="number" step=".000001" class="amt"
+              :value="asset.shares"
+              @change="updateRow($event,asset,'shares')">
+          </div>
+          <div class="flex1">
+            <input type="text"
+              :value="asset.symbol"
+              @change="updateRow($event,asset,'symbol')">
+          </div>
+          <div class="flex4">
+            <input type="text"
+               :value="asset.description"
+               @change="updateRow($event,asset,'description')">
+          </div>
+          <div class="col-amount">
+            <input type="number" step=".01" class="amt"
+              :value="asset.payment"
+              @change="updateRow($event,asset,'payment')">
+          </div>
+          <div class="flex1">
+            <button type="button" @click="deleteRow(asset.id)">remove</button>
+          </div>
         </div>
-        <div class="flex1">
-          <input type="text"
-            :value="asset.symbol"
-            @focusout="updateRow($event,asset,'symbol')">
+        <div class="row">
+          <div class="flex2"></div>
+          <div class="col-amount">{{ asset.price }}</div>
+          <div class="flex8">{{ asset.company }}</div>
         </div>
-        <div class="flex4">
-          <input type="text"
-             :value="asset.description"
-             @focusout="updateRow($event,asset,'description')">
-        </div>
-        <div class="col-amount">
-          <input type="number" step=".01" class="amt"
-            :value="asset.payment"
-            @focusout="updateRow($event,asset,'payment')">
-        </div>
-        <div class="flex1">
-          <button type="button" @click="deleteRow(asset)">remove</button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="flex2"></div>
-        <div class="col-amount">{{ asset.price }}</div>
-        <div class="flex8">{{ asset.company }}</div>
       </div>
     </div>
     <div class="row">
@@ -61,7 +63,6 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import axios from 'axios';
 
 export default {
   name: 'stocks',
@@ -71,8 +72,7 @@ export default {
 //  between the components.  All components must subtract tempId by 1000 in addRow method.
       tempId: -3,
       title: 'Stocks',
-      type: 'stock',
-      urlLookup: 'http://localhost:3000/symbol/'
+      type: 'stock'
     }
   },
   computed: {
@@ -110,10 +110,11 @@ export default {
       };
       this.$store.dispatch('insertAsset', newStock);
     },
-    deleteRow(asset) {
-      this.$store.dispatch('deleteAsset', asset.id);
+    deleteRow(aID) {
+      this.$store.dispatch('deleteAsset', aID);
     },
     updateRow(e,asset,propStr) {
+      console.log(e);
       let updAsset = {
         id: asset.id,
         type: asset.type,
@@ -127,11 +128,10 @@ export default {
       };
       updAsset[propStr] = e.srcElement.value;
       if (propStr==='symbol') {
-//! This should be a request to the backend to
-//!   update the stock information.
         updAsset.amount = 0;
         updAsset.price = 0;
         updAsset.company = '';
+// look up the new stock information in store.js
       }
       if (propStr==='shares') {
         updAsset.amount = Number(updAsset.price * updAsset.shares).toDecFormat(2);

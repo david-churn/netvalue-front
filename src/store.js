@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 const _ = require('lodash');
+import axios from 'axios';
 
 Vue.use(Vuex)
 
@@ -82,7 +83,8 @@ export default new Vuex.Store({
       , amount: 6700
       }
     ],
-    deleteStr: 'delete'
+    deleteStr: 'delete',
+    urlStr: 'http://localhost:3000/symbol/'
   },
   getters: {
     activeAssets(state) {
@@ -92,15 +94,6 @@ export default new Vuex.Store({
     typeAssets: (state) => (whichType) => {
       return state.assets
         .filter(asset => asset.type === whichType);
-    },
-    allStocks(state) {
-      return state.assets.filter(asset => asset.type==="stock");
-    },
-    allBonds(state) {
-      return state.assets.filter(asset => asset.type==="bond");
-    },
-    allFunds(state) {
-      return state.assets.filter(asset => asset.type==="fund");
     },
     activeDebts(state) {
       return state.debts

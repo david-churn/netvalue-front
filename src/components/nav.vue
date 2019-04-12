@@ -11,7 +11,7 @@
 </template>
 
 <script>
-// import firebase from 'firebase';
+import firebase from 'firebase';
 
 export default {
   name: 'navCmp',
@@ -19,27 +19,28 @@ export default {
     return {
       authorized: false
     }
-  // },
-  // created (){
-  //   firebase.auth().onAuthStateChanged((user) => {
-  //     if (user) {
-  //       this.authorized = true;
-  //     }
-  //     else {
-  //       this.authorized = false;
-  //     }
-  //   })
-  // },
-  //  methods: {
-  //    logout () {
-  //      firebase.auth().signOut()
-  //      .then(function() {
-  //        console.log('Signed Out!');
-  //      })
-  //      .catch(function(error) {
-  //        console.error('Sign Out Error', error);
-  //      });
-  //    }
+  },
+  created (){
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.authorized = true;
+        console.log(`user=`,user);
+      }
+      else {
+        this.authorized = false;
+      }
+    })
+  },
+   methods: {
+     logout () {
+       firebase.auth().signOut()
+       .then(function() {
+         console.log('Signed Out!');
+       })
+       .catch(function(error) {
+         console.error('Sign Out Error', error);
+       });
+     }
    }
 }
 </script>

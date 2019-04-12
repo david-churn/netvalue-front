@@ -16,19 +16,31 @@
       <div class="col-amount">{{ subtotalAssetsAmt }}</div>
       <div class="flex10">Assets</div>
     </h2>
-    <aSavings/>
-    <aStocks/>
-    <aOthers/>
+    <div class="card">
+      <aSavings/>
+    </div>
+    <div class="card">
+      <aStocks/>
+    </div>
+    <div class="card">
+      <aOthers/>
+    </div>
     <h2 class="row">
       <div class="col-amount">{{ subtotalDebtsAmt }}</div>
       <div class="flex10">Debts</div>
     </h2>
-    <dLoans/>
+    <div class="card">
+      <dLoans/>
+    </div>
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex';
+// third party
+import firebase from 'firebase';
+
+// components
 import aOthers from '../components/others.vue';
 import aSavings from '../components/savings.vue';
 import aStocks from '../components/stocks.vue';
@@ -42,12 +54,18 @@ export default {
     aOthers,
     dLoans
   },
-
   data: function () {
     return {
       totalAssets: 0,
       totalDebts: 0
     }
+  },
+  created () {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        this.$router.push('/');
+      }
+    })
   },
   computed: {
     subtotalAssetsAmt: function () {
@@ -72,5 +90,10 @@ export default {
 </script>
 
 <style scoped>
-
+.card {
+  background: $whitish;
+  border: solid 1px black;
+  margin: 1%;
+  padding: 1%;
+}
 </style>

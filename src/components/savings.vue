@@ -18,25 +18,25 @@
       <div class="col-amount">
         <input type="number" step=".01" min="0" class="amt"
           :value="asset.amount"
-          @focusout="updateRow($event, asset,'amount')">
+          @change="updateRow($event, asset,'amount')">
       </div>
       <div class="flex6">
         <input type="text"
           :value="asset.description"
-          @focusout="updateRow($event, asset, 'description')">
+          @change="updateRow($event, asset, 'description')">
       </div>
       <div class="flex1">
         <input type="number" step=".0001" min="0" class="amt"
           :value="asset.apr"
-          @focusout="updateRow($event, asset, 'apr')">
+          @change="updateRow($event, asset, 'apr')">
       </div>
       <div class="col-amount">
         <input type="number" step=".01" min="0" class="amt"
           :value="asset.payment"
-          @focusout="updateRow($event, asset, 'payment')">
+          @change="updateRow($event, asset, 'payment')">
       </div>
       <div class="flex1">
-        <button type="button" @click="deleteRow(asset)">remove</button>
+        <button type="button" @click="deleteRow(asset.id)">remove</button>
       </div>
     </div>
     <div class="row">
@@ -90,8 +90,8 @@ export default {
       };
       this.$store.dispatch('insertAsset', newSavings);
     },
-    deleteRow(asset) {
-      this.$store.dispatch('deleteAsset', asset.id);
+    deleteRow(aID) {
+      this.$store.dispatch('deleteAsset', aID);
     },
     updateRow(e,asset,propStr) {
       let updAsset = {
