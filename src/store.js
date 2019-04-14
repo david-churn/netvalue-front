@@ -9,6 +9,21 @@ export default new Vuex.Store({
 // complains when store data updated outside mutations. Remove for production.
   strict: true,
   state: {
+    deleteStr: 'delete',
+    urlStr: 'http://localhost:3000/',
+    profileStr: 'profile/',
+
+//  profile information
+    profileObj: {
+      personID: -1,
+      gID: "",
+      decimalStr: ".",
+      separatorStr: ",",
+      nickNm: "mugwump",
+      emailStr: "mugwump@onthefence.com",
+      lastLogInTsp: "",
+      updateAt: "",
+    },
 //  id, type, symbol, description, apr, payment, shares, price, amount
     assets: [
       {
@@ -82,9 +97,7 @@ export default new Vuex.Store({
       , payment: 300
       , amount: 6700
       }
-    ],
-    deleteStr: 'delete',
-    urlStr: 'http://localhost:3000/symbol/'
+    ]
   },
   getters: {
     activeAssets(state) {
@@ -103,6 +116,9 @@ export default new Vuex.Store({
       return state.debts
         .filter(debt => debt.type === whichType);
     },
+    getProfile(state) {
+      return state.profile;
+    }
   },
   actions: {
     deleteAsset(context,id) {
@@ -122,6 +138,15 @@ export default new Vuex.Store({
     },
     updateDebt(context,debtObj) {
       context.commit('updateDebt', debtObj);
+    },
+    deleteProfile(context,personID) {
+      context.commit('deleteProfile', personID);
+    },
+    insertProfile(context,personObj) {
+      context.commit('insertProfile', personObj);
+    },
+    updateProfile(context,personObj) {
+      context.commit('updateProfile', personObj);
     }
   },
   mutations: {
@@ -154,6 +179,65 @@ export default new Vuex.Store({
       if (debtIdx >= 0) {
         state.debts.splice(debtIdx,1,updateObj);
       }
+    },
+    deleteProfile(state,personID) {
+      let delStr = state.urlStr + state.profileStr + 'deluser/' + personID;
+      console.log(`delStr=${delStr}`);
+      axios.delete(delStr)
+        .then ((resp) => {
+          if (!resp.data.errors) {
+            console.log(resp.data);
+            state.profile = {};
+          }
+          else {
+            console.log(resp.data.errors);
+          }
+        })
+        .catch ((error) => {
+          console.log(`delete error=`,error);
+          throw (error);
+        })
+    },
+    insertProfile(state,personObj) {
+//! call the backend to set up new profile information and assign personID
+      let updStr = state.urlStr + state.profileStr + 'adduser/' + personObj.gID;
+      console.log(`updStr=${updStr}`,personObj);
+      axios.post(updStr, personObj)
+        .then ((resp) => {
+          if (!resp.data.errors) {
+            console.log(resp.data);
+//! update the state.profile with the returned information
+          }
+          else {
+            console.log(resp.data.errors);
+          }
+        })
+        .catch ((error) => {
+          console.log(`post error=`,error);
+          throw (error)
+        })
+    },
+// updates from the profile screen
+    updateProfile(state,personObj) {
+      state.profileObj.nickNm = personObj.nickNm;
+      state.profileObj.emailStr = personObj.emailStr;
+      state.profileObj.decimalStr = personObj.decimalStr;
+      state.profileObj.separatorStr = personObj.separatorStr;
+      let updStr = state.urlStr + state.profileStr + 'upduser/' + state.profileObj.personID;
+      console.log(`updStr=${updStr}`,state.profileObj);
+      axios.patch(updStr, state.profileObj)
+        .then ((resp) => {
+          if (!resp.data.errors) {
+            console.log(resp.data);
+          }
+          else {
+            console.log(resp.data.errors);
+          }
+        })
+        .catch ((error) => {
+          console.log(`post error=`,error);
+          throw (error)
+        })
     }
   }
 })
