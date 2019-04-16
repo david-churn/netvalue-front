@@ -58,7 +58,7 @@ export default {
     this.separatorStr = this.profileObj.separatorStr;
     this.exampleNbr = Number( 123456789.1234 ).toDecFormat(4,3,this.separatorStr,this.decimalStr);
   },
-  computed: mapState (['profileObj']),
+  computed: mapState (["profileObj"]),
   methods: {
     chgProf () {
       this.exampleNbr = Number( 123456789.1234 ).toDecFormat(4,3,this.separatorStr,this.decimalStr);
@@ -68,7 +68,7 @@ export default {
         decimalStr: this.decimalStr,
         separatorStr: this.separatorStr
       }
-      this.$store.dispatch('updateProfile', updateObj);
+      this.$store.dispatch("updateProfile", updateObj);
     }
   }
 }

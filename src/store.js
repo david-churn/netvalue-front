@@ -1,7 +1,7 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-const _ = require('lodash');
-import axios from 'axios';
+import Vue from "vue"
+import Vuex from "vuex"
+const _ = require("lodash");
+import axios from "axios";
 
 Vue.use(Vuex)
 
@@ -9,65 +9,56 @@ export default new Vuex.Store({
 // complains when store data updated outside mutations. Remove for production.
   strict: true,
   state: {
-    deleteStr: 'delete',
-    urlStr: 'http://localhost:3000/',
-    profileStr: 'profile/',
+    deleteStr: "delete",
+    urlStr: "http://localhost:3000/",
+    profileStr: "profile/",
 
 //  profile information
-    profileObj: {
-      personID: -1,
-      gID: "",
-      decimalStr: ".",
-      separatorStr: ",",
-      nickNm: "mugwump",
-      emailStr: "mugwump@onthefence.com",
-      lastLogInTsp: "",
-      updateAt: "",
-    },
+    profileObj: {},
 //  id, type, symbol, description, apr, payment, shares, price, amount
     assets: [
       {
         id: 2
-      , type: 'other'
-      , description: 'Cash'
+      , type: "other"
+      , description: "Cash"
       , amount: 12345.12
       },
       {
         id: 3
-      , type: 'saving'
-      , description: 'Bank Savings'
+      , type: "saving"
+      , description: "Bank Savings"
       , apr: 0.004
       , amount: 200
       , payment: 50
       },
       {
         id: 5
-      , type: 'saving'
-      , description: 'Bank Checking'
+      , type: "saving"
+      , description: "Bank Checking"
       , apr: 0.001
       , amount: 20000
       },
       {
         id: 7
-      , type: 'stock'
+      , type: "stock"
       , amount: 3002.27
-      , symbol: 'UHG'
-      , description: 'Her Stock'
+      , symbol: "UHG"
+      , description: "Her Stock"
       , shares: 15.0001
       , payment: 0
       , price: 200.15
-      , company: 'United Healthcare Group'
+      , company: "United Healthcare Group"
       },
       {
         id: 19
-      , type: 'other'
-      , description: 'home'
+      , type: "other"
+      , description: "home"
       , amount: 83500
       },
       {
         id: 23
-      , type: 'other'
-      , description: 'life insurance policy'
+      , type: "other"
+      , description: "life insurance policy"
       , amount: 14238.75
       }
   ],
@@ -75,24 +66,24 @@ export default new Vuex.Store({
     debts: [
       {
         id: 29
-      , type: 'loan'
-      , description: 'home mortgage'
+      , type: "loan"
+      , description: "home mortgage"
       , apr : 0.02
       , payment: 893.56
       , amount: 45678.90
       },
       {
         id: 31
-      , type: 'loan'
-      , description: 'car loan'
+      , type: "loan"
+      , description: "car loan"
       , apr: 0.05
       , payment: 300
       , amount: 6700
       },
       {
         id: 37
-      , type: 'loan'
-      , description: 'VISA'
+      , type: "loan"
+      , description: "VISA"
       , apr: 0.18
       , payment: 300
       , amount: 6700
@@ -117,36 +108,39 @@ export default new Vuex.Store({
         .filter(debt => debt.type === whichType);
     },
     getProfile(state) {
-      return state.profile;
+      return state.profileObj;
     }
   },
   actions: {
     deleteAsset(context,id) {
-      context.commit('deleteAsset', id);
+      context.commit("deleteAsset", id);
     },
     insertAsset(context,assetObj) {
-      context.commit('insertAsset', assetObj);
+      context.commit("insertAsset", assetObj);
     },
     updateAsset(context,assetObj) {
-      context.commit('updateAsset', assetObj);
+      context.commit("updateAsset", assetObj);
     },
     deleteDebt(context,id) {
-      context.commit('deleteDebt', id);
+      context.commit("deleteDebt", id);
     },
     insertDebt(context,debtObj) {
-      context.commit('insertDebt', debtObj);
+      context.commit("insertDebt", debtObj);
     },
     updateDebt(context,debtObj) {
-      context.commit('updateDebt', debtObj);
+      context.commit("updateDebt", debtObj);
     },
     deleteProfile(context,personID) {
-      context.commit('deleteProfile', personID);
+      context.commit("deleteProfile", personID);
     },
     insertProfile(context,personObj) {
-      context.commit('insertProfile', personObj);
+      context.commit("insertProfile", personObj);
     },
     updateProfile(context,personObj) {
-      context.commit('updateProfile', personObj);
+      context.commit("updateProfile", personObj);
+    },
+    fetchProfile(context,userObj) {
+      context.commit("fetchProfile",userObj)
     }
   },
   mutations: {
@@ -181,7 +175,7 @@ export default new Vuex.Store({
       }
     },
     deleteProfile(state,personID) {
-      let delStr = state.urlStr + state.profileStr + 'deluser/' + personID;
+      let delStr = state.urlStr + state.profileStr + "deluser/" + personID;
       console.log(`delStr=${delStr}`);
       axios.delete(delStr)
         .then ((resp) => {
@@ -200,7 +194,7 @@ export default new Vuex.Store({
     },
     insertProfile(state,personObj) {
 //! call the backend to set up new profile information and assign personID
-      let updStr = state.urlStr + state.profileStr + 'adduser/' + personObj.gID;
+      let updStr = state.urlStr + state.profileStr + "adduser/" + personObj.gID;
       console.log(`updStr=${updStr}`,personObj);
       axios.post(updStr, personObj)
         .then ((resp) => {
@@ -223,12 +217,31 @@ export default new Vuex.Store({
       state.profileObj.emailStr = personObj.emailStr;
       state.profileObj.decimalStr = personObj.decimalStr;
       state.profileObj.separatorStr = personObj.separatorStr;
-      let updStr = state.urlStr + state.profileStr + 'upduser/' + state.profileObj.personID;
+      let updStr = state.urlStr + state.profileStr + "upduser/" + state.profileObj.personID;
       console.log(`updStr=${updStr}`,state.profileObj);
       axios.patch(updStr, state.profileObj)
         .then ((resp) => {
           if (!resp.data.errors) {
             console.log(resp.data);
+          }
+          else {
+            console.log(resp.data.errors);
+          }
+        })
+        .catch ((error) => {
+          console.log(`post error=`,error);
+          throw (error)
+        })
+    },
+    fetchProfile(state,userObj) {
+      console.log(`google userObj=`, userObj);
+      let fetchStr = state.urlStr + state.profileStr + "gid/" + userObj.uid;
+      console.log(`fetchStr=${fetchStr}`);
+      axios.get(fetchStr)
+        .then ((resp) => {
+          if (!resp.data.errors) {
+            console.log(resp.data);
+            state.profileObj = resp.data;
           }
           else {
             console.log(resp.data.errors);

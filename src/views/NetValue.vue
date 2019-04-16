@@ -36,18 +36,18 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import {mapGetters} from "vuex";
 // third party
-import firebase from 'firebase';
+import firebase from "firebase";
 
 // components
-import aOthers from '../components/others.vue';
-import aSavings from '../components/savings.vue';
-import aStocks from '../components/stocks.vue';
-import dLoans from '../components/loans.vue';
+import aOthers from "../components/others.vue";
+import aSavings from "../components/savings.vue";
+import aStocks from "../components/stocks.vue";
+import dLoans from "../components/loans.vue";
 
 export default {
-  name: 'NetValue',
+  name: "NetValue",
   components: {
     aSavings,
     aStocks,
@@ -63,9 +63,14 @@ export default {
   created () {
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
-        this.$router.push('/');
+        this.$router.push("/");
+      }
+      if (this.profileObj === {}) {
+        this.$store.dispatch("fetchProfile",user)
       }
     })
+  },
+  mounted () {
   },
   computed: {
     subtotalAssetsAmt: function () {
@@ -83,7 +88,11 @@ export default {
     totalAmt: function () {
       return Number(this.totalAssets - this.totalDebts).toDecFormat(2);
     },
-    ...mapGetters(['activeAssets', 'activeDebts'])
+    ...mapGetters([
+      "activeAssets",
+      "activeDebts",
+      "getProfile"
+    ])
   }
 }
 
