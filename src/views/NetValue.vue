@@ -39,6 +39,7 @@
 import {mapGetters} from "vuex";
 // third party
 import firebase from "firebase";
+import _ from "lodash";
 
 // components
 import aOthers from "../components/others.vue";
@@ -63,14 +64,15 @@ export default {
   created () {
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
+        this.$store.dispatch("clearProfile");
         this.$router.push("/");
       }
-      if (this.profileObj === {}) {
-        this.$store.dispatch("fetchProfile",user)
+      else {
+        if (_.isEmpty(this.personProfile)) {
+          this.$store.dispatch("fetchProfile",user)
+        }
       }
     })
-  },
-  mounted () {
   },
   computed: {
     subtotalAssetsAmt: function () {
@@ -91,7 +93,7 @@ export default {
     ...mapGetters([
       "activeAssets",
       "activeDebts",
-      "getProfile"
+      "personProfile"
     ])
   }
 }

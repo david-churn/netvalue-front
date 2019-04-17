@@ -1,7 +1,8 @@
 import Vue from "vue"
 import Vuex from "vuex"
-const _ = require("lodash");
+import _ from "lodash";
 import axios from "axios";
+import moment from "moment";
 
 Vue.use(Vuex)
 
@@ -107,7 +108,7 @@ export default new Vuex.Store({
       return state.debts
         .filter(debt => debt.type === whichType);
     },
-    getProfile(state) {
+    personProfile(state) {
       return state.profileObj;
     }
   },
@@ -130,17 +131,39 @@ export default new Vuex.Store({
     updateDebt(context,debtObj) {
       context.commit("updateDebt", debtObj);
     },
+    clearProfile(context) {
+      context.commit("clearProfile");
+    },
     deleteProfile(context,personID) {
       context.commit("deleteProfile", personID);
+    },
+    fetchProfile(context,userObj) {
+      console.log(`google userObj=`, userObj);
+      let fetchStr = this.state.urlStr + this.state.profileStr + "gid/" + userObj.uid;
+      console.log(`fetchStr=${fetchStr}`);
+      axios.get(fetchStr)
+        .then ((resp) => {
+          if (!resp.data.errors) {
+            console.log(resp.data);
+            context.commit("fetchProfile",resp.data)
+          }
+          else {
+            console.log(resp.data.errors);
+          }
+        })
+        .catch ((error) => {
+          console.log(`post error=`,error);
+          throw (error)
+        });
     },
     insertProfile(context,personObj) {
       context.commit("insertProfile", personObj);
     },
+    loadProfile(context,personObj) {
+      context.commit("loadProfile",personObj)
+    },
     updateProfile(context,personObj) {
       context.commit("updateProfile", personObj);
-    },
-    fetchProfile(context,userObj) {
-      context.commit("fetchProfile",userObj)
     }
   },
   mutations: {
@@ -174,6 +197,9 @@ export default new Vuex.Store({
         state.debts.splice(debtIdx,1,updateObj);
       }
     },
+    clearProfile(state) {
+      state.profileObj = {};
+    },
     deleteProfile(state,personID) {
       let delStr = state.urlStr + state.profileStr + "deluser/" + personID;
       console.log(`delStr=${delStr}`);
@@ -191,6 +217,17 @@ export default new Vuex.Store({
           console.log(`delete error=`,error);
           throw (error);
         })
+    },
+    fetchProfile(state,personObj) {
+      state.profileObj = {
+        personId: personObj.personID,
+        lastLogInTsp: moment(personObj.lastLogInTsp).format("MMMM Do YYYY, h:mm:ss a"),
+        updatedAt: moment(personObj.updatedAt).format("MMMM Do YYYY, h:mm:ss a"),
+        nickNm: personObj.nickNm,
+        emailStr: personObj.emailStr,
+        decimalStr: personObj.decimalStr,
+        separatorStr: personObj.separatorStr
+      };
     },
     insertProfile(state,personObj) {
 //! call the backend to set up new profile information and assign personID
@@ -223,25 +260,6 @@ export default new Vuex.Store({
         .then ((resp) => {
           if (!resp.data.errors) {
             console.log(resp.data);
-          }
-          else {
-            console.log(resp.data.errors);
-          }
-        })
-        .catch ((error) => {
-          console.log(`post error=`,error);
-          throw (error)
-        })
-    },
-    fetchProfile(state,userObj) {
-      console.log(`google userObj=`, userObj);
-      let fetchStr = state.urlStr + state.profileStr + "gid/" + userObj.uid;
-      console.log(`fetchStr=${fetchStr}`);
-      axios.get(fetchStr)
-        .then ((resp) => {
-          if (!resp.data.errors) {
-            console.log(resp.data);
-            state.profileObj = resp.data;
           }
           else {
             console.log(resp.data.errors);

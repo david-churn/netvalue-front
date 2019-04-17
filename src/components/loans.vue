@@ -18,25 +18,25 @@
       <div class="col-amount">
         <input type="number" step=".01" class="amt"
           :value="debt.amount"
-          @focusout="updateRow($event,debt,'amount')">
+          @change="updateRow($event,debt,'amount')">
       </div>
       <div class="flex6">
         <input type="text"
           :value="debt.description"
-          @focusout="updateRow($event,debt,'description')">
+          @change="updateRow($event,debt,'description')">
       </div>
       <div class="flex1">
         <input type="number" step=".0001" class="amt"
           :value="debt.apr"
-          @focusout="updateRow($event,debt,'apr')">
+          @change="updateRow($event,debt,'apr')">
       </div>
       <div class="col-amount">
         <input type="number" step=".01" class="amt"
           v-model="debt.payment"
-          @focusout="updateRow($event,debt,'payment')">
+          @change="updateRow($event,debt,'payment')">
       </div>
       <div class="flex1">
-        <button type="button" @click="deleteRow(debt)">remove</button>
+        <button type="button" @click="deleteRow(debt.id)">remove</button>
       </div>
     </div>
     <div class="row">
@@ -90,8 +90,8 @@ export default {
       };
       this.$store.dispatch('insertDebt', newLoan);
     },
-    deleteRow(debt) {
-      this.$store.dispatch('deleteDebt', debt.id);
+    deleteRow(dID) {
+      this.$store.dispatch('deleteDebt', dID);
     },
     updateRow(e,debt,propStr) {
       let updDebt = {

@@ -29,6 +29,7 @@
 <script>
 import firebase from "firebase";
 import { mapState } from "vuex";
+import _ from "lodash";
 
 export default {
   name: "profile",
@@ -48,9 +49,15 @@ export default {
   created () {
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
+        this.$store.dispatch("clearProfile");
         this.$router.push("/");
       }
+      else {
+        if (_.isEmpty(this.personProfile)) {
+          this.$store.dispatch("fetchProfile",user)
+        }
       this.gNameStr = user.displayName;
+      }
     });
     this.nickNm = this.profileObj.nickNm;
     this.emailStr = this.profileObj.emailStr;

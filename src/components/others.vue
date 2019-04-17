@@ -14,12 +14,12 @@
       <div class="col-amount">
         <input  type="number" step=".01" class="amt"
           :value="asset.amount"
-          @focusout="updateRow($event,asset,'amount')">
+          @change="updateRow($event,asset,'amount')">
       </div>
       <div class="flex9">
         <input type="text"
           :value="asset.description"
-          @focusout="updateRow($event,asset,'description')">
+          @change="updateRow($event,asset,'description')">
       </div>
       <div class="flex1">
         <button type="button"
