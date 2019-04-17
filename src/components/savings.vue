@@ -63,13 +63,13 @@ export default {
     subtotalAmt: function () {
       return this.savingsAssets
         .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
-        .reduce((total, amount) => total + amount)
+        .reduce((total, amount) => total + amount, 0)
         .toDecFormat(2);
     },
     subtotalContrib: function() {
       return this.savingsAssets
         .map(asset => Number.isFinite(Number(asset.payment)) ? Number(asset.payment) : 0)
-        .reduce((total, payment) => total + payment)
+        .reduce((total, payment) => total + payment, 0)
         .toDecFormat(2);
     },
     savingsAssets: function () {

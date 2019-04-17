@@ -78,17 +78,24 @@ export default {
     subtotalAssetsAmt: function () {
       return this.activeAssets
         .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
-        .reduce((total, amount) => total + amount)
+        .reduce((total, amount) => total + amount, 0)
         .toDecFormat(2);
     },
     subtotalDebtsAmt: function () {
       return this.activeDebts
         .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
-        .reduce((total, amount) => total + amount)
+        .reduce((total, amount) => total + amount, 0)
         .toDecFormat(2);
     },
     totalAmt: function () {
-      return Number(this.totalAssets - this.totalDebts).toDecFormat(2);
+      return Number(
+          this.activeAssets
+            .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
+            .reduce((total, amount) => total + amount, 0)
+        - this.activeDebts
+            .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
+            .reduce((total, amount) => total + amount, 0)
+        ).toDecFormat(2);
     },
     ...mapGetters([
       "activeAssets",

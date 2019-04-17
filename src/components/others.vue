@@ -52,7 +52,7 @@ export default {
     subtotalAmt: function () {
       return this.otherAssets
         .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
-        .reduce((total, amount) => total + amount)
+        .reduce((total, amount) => total + amount, 0)
         .toDecFormat(2);
     },
     otherAssets: function () {
