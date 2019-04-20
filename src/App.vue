@@ -2,7 +2,6 @@
   <div id="app">
     <navCmp/>
     <h1>{{ title }}</h1>
-    <p>{{ todayStr }}</p>
     <router-view/>
   </div>
 </template>
@@ -10,9 +9,8 @@
 <script>
 import navCmp from './components/nav.vue';
 
-//shrink this to just what is needed?  anything?
-const _ = require('lodash');
-const moment = require('moment');
+//shrink this to just what is needed
+// const _ = require('lodash');
 
 export default {
   name: "app",
@@ -21,11 +19,7 @@ export default {
   data: function () {
     return {
       title: 'Your Simple Net Value',
-      todayStr: ''
     }
-  },
-  created() {
-    this.todayStr = moment().format('MMMM Do YYYY');
   }
 }
 </script>
@@ -60,9 +54,6 @@ h1 {
 }
 body {
   margin: 1%;
-}
-input {
-  width: 90%;
 }
 .amt {
   text-align: right;

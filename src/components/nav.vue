@@ -1,10 +1,10 @@
 <template lang="html">
   <div id="navCmp">
+    <span>{{ todayStr }}</span> | 
     <router-link to="/">Home</router-link> |
     <router-link to="/netvalue">Net Value</router-link> |
     <router-link to="/futurevalue">Future Value</router-link> |
     <router-link to="/tools">Tools</router-link> |
-    <router-link to="/stockmarket">Stock Market</router-link> |
     <router-link to="/profile">Profile</router-link> |
     <router-link to="/about">About</router-link>
     <span v-if="authorized"> |
@@ -15,15 +15,18 @@
 
 <script>
 import firebase from 'firebase';
+const moment = require('moment');
 
 export default {
   name: 'navCmp',
   data: function () {
     return {
-      authorized: false
+      authorized: false,
+      todayStr: ""
     }
   },
   created (){
+    this.todayStr = moment().format('MMMM Do YYYY');
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.authorized = true;
@@ -34,17 +37,17 @@ export default {
       }
     })
   },
-   methods: {
-     logout () {
-       firebase.auth().signOut()
-       .then(function() {
-         console.log('Signed Out!');
-       })
-       .catch(function(error) {
-         console.error('Sign Out Error', error);
-       });
-     }
-   }
+  methods: {
+    logout () {
+      firebase.auth().signOut()
+        .then(function() {
+          console.log('Signed Out!');
+        })
+        .catch(function(error) {
+          console.error('Sign Out Error', error);
+        });
+    }
+  }
 }
 </script>
 

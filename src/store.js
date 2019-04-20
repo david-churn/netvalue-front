@@ -11,7 +11,10 @@ export default new Vuex.Store({
   strict: true,
   state: {
     deleteStr: "delete",
-    urlStr: "http://localhost:3000/",
+    iexUrlStr: "https://api.iextrading.com/1.0",
+    iexPriceStr: "/quote?filter=companyName,latestPrice,latestSource",
+    iexStockStr: "/stock/",
+    localUrlStr: "http://localhost:3000/",
     profileStr: "profile/",
 
 //  profile information
@@ -139,7 +142,7 @@ export default new Vuex.Store({
     },
     fetchProfile(context,userObj) {
       console.log(`google userObj=`, userObj);
-      let fetchStr = this.state.urlStr + this.state.profileStr + "gid/" + userObj.uid;
+      let fetchStr = this.state.localUrlStr + this.state.profileStr + "gid/" + userObj.uid;
       console.log(`fetchStr=${fetchStr}`);
       axios.get(fetchStr)
         .then ((resp) => {
@@ -201,7 +204,7 @@ export default new Vuex.Store({
       state.profileObj = {};
     },
     deleteProfile(state,personID) {
-      let delStr = state.urlStr + state.profileStr + "deluser/" + personID;
+      let delStr = state.localUrlStr + state.profileStr + "deluser/" + personID;
       console.log(`delStr=${delStr}`);
       axios.delete(delStr)
         .then ((resp) => {
@@ -231,7 +234,7 @@ export default new Vuex.Store({
     },
     insertProfile(state,personObj) {
 //! call the backend to set up new profile information and assign personID
-      let updStr = state.urlStr + state.profileStr + "adduser/" + personObj.gID;
+      let updStr = state.localUrlStr + state.profileStr + "adduser/" + personObj.gID;
       console.log(`updStr=${updStr}`,personObj);
       axios.post(updStr, personObj)
         .then ((resp) => {
@@ -254,7 +257,7 @@ export default new Vuex.Store({
       state.profileObj.emailStr = personObj.emailStr;
       state.profileObj.decimalStr = personObj.decimalStr;
       state.profileObj.separatorStr = personObj.separatorStr;
-      let updStr = state.urlStr + state.profileStr + "upduser/" + state.profileObj.personID;
+      let updStr = state.localUrlStr + state.profileStr + "upduser/" + state.profileObj.personID;
       console.log(`updStr=${updStr}`,state.profileObj);
       axios.patch(updStr, state.profileObj)
         .then ((resp) => {

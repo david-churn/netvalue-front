@@ -2,7 +2,7 @@
   <div class="netvalue">
     <h2 class="row">
       <div class="col-amount">{{ totalAmt }}</div>
-      <div class="flex10">Net Value</div>
+      <div class="flex10">{{ title }}</div>
     </h2>
     <div class="row">
       <div class="flex11">
@@ -57,8 +57,7 @@ export default {
   },
   data: function () {
     return {
-      totalAssets: 0,
-      totalDebts: 0
+      title: "Net Value",
     }
   },
   created () {

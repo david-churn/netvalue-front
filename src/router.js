@@ -5,7 +5,6 @@ import FutureValue from "./views/FutureValue.vue"
 import Home from "./views/Home.vue"
 import NetValue from "./views/NetValue.vue"
 import Profile from "./views/Profile.vue"
-import StockMarket from "./views/StockMarket.vue"
 import Tools from "./views/Tools.vue"
 
 Vue.use(Router)
@@ -38,11 +37,6 @@ export default new Router({
       path: "/profile",
       name: "profile",
       component: Profile
-    },
-    {
-      path: "/stockmarket",
-      name: "stockmarket",
-      component: StockMarket
     },
     {
       path: "/tools",
