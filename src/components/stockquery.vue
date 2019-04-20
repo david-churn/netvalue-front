@@ -11,7 +11,10 @@
     </div>
     <div class="row">
       <div class="flex2 right">Price: </div>
-      <div class="flex10">{{ stockObj.latestPrice }}</div>
+      <div class="flex10">{{ stockObj.latestPrice }}
+        <span v-if="stockObj.latestSource"> at {{ stockObj.latestSource}}</span>
+        <span v-if="stockObj.latestTime"> on {{ stockObj.latestTime }}</span>
+      </div>
     </div>
     <div class="row">
       <div class="flex2 right">Company Name: </div>
@@ -25,14 +28,13 @@
       <div class="flex2 right">Sector: </div>
       <div class="flex4">{{ stockObj.sector}}</div>
     </div>
-    <p>Data provided for free by <a href="https://iextrading.com/developer">IEX</a>. View <a href="https://iextrading.com/api-exhibit-a/">IEX&rsquo;s Terms of Use</a>.
+    <p class="small">Data provided for free by <a href="https://iextrading.com/developer">IEX</a>. View <a href="https://iextrading.com/api-exhibit-a/">IEX&rsquo;s Terms of Use</a>.
     </p>
   </div>
 </template>
 
 <script>
 import axios from "axios"
-import { mapState } from "vuex"
 
 export default {
   name: "stockQuery",
@@ -41,46 +43,64 @@ export default {
       iexCompanyStr: "/company?filter=companyName,exchange,industry,website,sector",
 
       stockObj: {
-        symbol: "F",
-        exchange: "dunno",
-        latestPrice: 1234567.89,
-        latestSource: "Dave's mind",
-        companyName: "Ford Motor Company",
-        industry: "Industrial",
-        sector: "Manufacturing",
-        website: "https://www.ford.com"
+        symbol: "",
+        exchange: "",
+        latestPrice: undefined,
+        latestSource: "",
+        latestTime: "",
+        companyName: "",
+        industry: "",
+        sector: "",
+        website: ""
       },
       title: "Stock Look Up",
     }
   },
   methods: {
     queryAPI() {
-      let iexPrefix = this.$store.state.iexUrlStr + this.$store.state.iexStockStr + this.stockObj.symbol;
-      let iexRequest = iexPrefix + this.$store.state.iexPriceStr;
-      console.log(`iexRequest=${iexRequest}`);
-      axios.get(iexRequest)
-        .then ((resp) => {
-          console.log(resp.data);
-          this.stockObj.latestPrice = resp.data.latestPrice;
-          this.stockObj.latestSource = resp.data.latestSource;
-        })
-        .then ( () => {
-          iexRequest = iexPrefix + this.iexCompanyStr
-          console.log(`iexRequest=${iexRequest}`);
-          return axios.get(iexRequest)
-        })
-        .then ((resp) => {
-          console.log(resp.data);
-          this.stockObj.companyName = resp.data.companyName;
-          this.stockObj.exchange = resp.data.exchange;
-          this.stockObj.industry = resp.data.industry;
-          this.stockObj.website = resp.data.website;
-          this.stockObj.sector = resp.data.sector;
-        })
-        .catch ((error) => {
-          console.log(`post error=`,error);
-          throw (error)
-        });
+      if (this.stockObj.symbol) {
+        let iexPrefix = this.$store.state.iexUrlStr + this.$store.state.iexStockStr + this.stockObj.symbol;
+        let iexRequest = iexPrefix + this.$store.state.iexPriceStr;
+        console.log(`iexRequest=${iexRequest}`);
+        axios.get(iexRequest)
+          .then ((resp) => {
+            console.log(resp.data);
+            this.stockObj.latestPrice = resp.data.latestPrice.toDecFormat(2);
+            this.stockObj.latestSource = resp.data.latestSource;
+            this.stockObj.latestTime =
+            resp.data.latestTime;
+          })
+          .then ( () => {
+            iexRequest = iexPrefix + this.iexCompanyStr
+            console.log(`iexRequest=${iexRequest}`);
+            return axios.get(iexRequest)
+          })
+          .then ((resp) => {
+            console.log(resp.data);
+            this.stockObj.companyName = resp.data.companyName;
+            this.stockObj.exchange = resp.data.exchange;
+            this.stockObj.industry = resp.data.industry;
+            this.stockObj.website = resp.data.website;
+            this.stockObj.sector = resp.data.sector;
+          })
+          .catch ((error) => {
+            console.log(`post error=`,error);
+            throw (error)
+          });
+      }
+      else {
+        this.stockObj = {
+          symbol: "",
+          exchange: "",
+          latestPrice: undefined,
+          latestSource: "",
+          latestTime: "",
+          companyName: "",
+          industry: "",
+          sector: "",
+          website: ""
+        }
+      }
     }
   }
 }
@@ -89,5 +109,8 @@ export default {
 <style lang="css" scoped>
 .right {
   text-align: right;
+}
+.small {
+  font-size: 0.6em;
 }
 </style>

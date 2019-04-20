@@ -1,9 +1,8 @@
 <template lang="html">
   <div id="navCmp">
-    <span>{{ todayStr }}</span> | 
+    <span>{{ todayStr }}</span> |
     <router-link to="/">Home</router-link> |
     <router-link to="/netvalue">Net Value</router-link> |
-    <router-link to="/futurevalue">Future Value</router-link> |
     <router-link to="/tools">Tools</router-link> |
     <router-link to="/profile">Profile</router-link> |
     <router-link to="/about">About</router-link>

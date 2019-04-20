@@ -1,7 +1,6 @@
 import Vue from "vue"
 import Router from "vue-router"
 import About from "./views/About.vue"
-import FutureValue from "./views/FutureValue.vue"
 import Home from "./views/Home.vue"
 import NetValue from "./views/NetValue.vue"
 import Profile from "./views/Profile.vue"
@@ -22,11 +21,6 @@ export default new Router({
       path: "/about",
       name: "about",
       component: About
-    },
-    {
-      path: "/futurevalue",
-      name: "futurevalue",
-      component: FutureValue
     },
     {
       path: "/netvalue",

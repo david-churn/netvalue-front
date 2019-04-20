@@ -12,7 +12,7 @@ export default new Vuex.Store({
   state: {
     deleteStr: "delete",
     iexUrlStr: "https://api.iextrading.com/1.0",
-    iexPriceStr: "/quote?filter=companyName,latestPrice,latestSource",
+    iexPriceStr: "/quote?filter=companyName,latestPrice,latestSource,latestTime",
     iexStockStr: "/stock/",
     localUrlStr: "http://localhost:3000/",
     profileStr: "profile/",
