@@ -89,7 +89,6 @@ export default {
         .reduce((total, payment) => total + payment, 0)
         .toDecFormat(2);
     },
-
     stocksAssets: function () {
       return this.typeAssets(this.type);
     },
@@ -142,12 +141,13 @@ export default {
           return axios.get(requestStr)
             .then ((resp) => {
               console.log(resp.data);
-              updAsset.price = resp.data.latestPrice.toDecFormat(2);
+              updAsset.price = resp.data.latestPrice.toDecFormat(4);
               updAsset.latestSource = resp.data.latestSource;
               updAsset.latestTime =
               resp.data.latestTime;
               updAsset.company = resp.data.companyName;
               updAsset.amount = Number(resp.data.latestPrice * updAsset.shares).toDecFormat(2);
+              console.log(`unrounded ${updAsset.amount}=${resp.data.latestPrice}*${updAsset.shares}`);
               this.$store.dispatch("updateAsset", updAsset);
             })
             .catch ((error) => {

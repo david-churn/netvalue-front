@@ -128,7 +128,7 @@ export default new Vuex.Store({
         assets: this.state.assets,
         debts: this.state.debts
       };
-      console.log(`saveNetValue (${requestStr})=`,requestObj);
+      console.log(`saveNetValue ${requestStr}`,requestObj);
       axios.post(requestStr, requestObj)
         .then ((resp) => {
           console.log(resp.data);
