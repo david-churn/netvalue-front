@@ -18,7 +18,7 @@ export default {
     navCmp },
   data: function () {
     return {
-      title: 'Your Simple Net Value',
+      title: 'Simple Net Value',
     }
   }
 }

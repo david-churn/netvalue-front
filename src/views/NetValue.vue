@@ -6,10 +6,12 @@
     </h2>
     <div class="row">
       <div class="flex11">
-        <button type="button">Save</button>
+        <button type="button"
+          @click="saveNetValue">Save</button>
       </div>
       <div class="flex1">
-        <button type="button">Reset</button>
+        <button type="button"
+          @click="resetNetValue">Reset</button>
       </div>
     </div>
     <h2 class="row">
@@ -68,7 +70,7 @@ export default {
       }
       else {
         if (_.isEmpty(this.personProfile)) {
-          this.$store.dispatch("fetchProfile",user)
+          this.$store.dispatch("fetchProfile",user);
         }
       }
     })
@@ -101,6 +103,14 @@ export default {
       "activeDebts",
       "personProfile"
     ])
+  },
+  methods: {
+    saveNetValue () {
+      this.$store.dispatch("saveNetValue");
+    },
+    resetNetValue () {
+      this.$store.dispatch("readNetValue");
+    }
   }
 }
 

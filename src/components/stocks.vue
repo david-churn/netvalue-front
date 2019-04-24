@@ -62,17 +62,18 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import axios from "axios";
+import {mapGetters} from "vuex";
 
 export default {
-  name: 'stocks',
+  name: "stocks",
   data: function () {
     return {
 //  tempId is a unique number for each asset component.  Prevents duplicate tempId
 //  between the components.  All components must subtract tempId by 1000 in addRow method.
       tempId: -3,
-      title: 'Stocks',
-      type: 'stock'
+      title: "Stocks",
+      type: "stock"
     }
   },
   computed: {
@@ -92,7 +93,7 @@ export default {
     stocksAssets: function () {
       return this.typeAssets(this.type);
     },
-    ...mapGetters(['typeAssets'])
+    ...mapGetters(["typeAssets"])
   },
   methods: {
     addRow() {
@@ -100,21 +101,23 @@ export default {
       let newStock = {
         id: this.tempId,
         type: this.type,
-        amount: '0.00',
-        symbol: 'enter',
-        description: 'Your Stock',
+        amount: "0.00",
+        symbol: "",
+        description: "Your Stock",
         shares: 0,
         payment: 0,
         price: 0,
-        company: ''
+        latestSource: "",
+        latestTime: "",
+        company: ""
       };
-      this.$store.dispatch('insertAsset', newStock);
+      this.$store.dispatch("insertAsset", newStock);
     },
     deleteRow(aID) {
-      this.$store.dispatch('deleteAsset', aID);
+      this.$store.dispatch("deleteAsset", aID);
     },
     updateRow(e,asset,propStr) {
-      console.log(e);
+      console.log(`updateRow=`,e);
       let updAsset = {
         id: asset.id,
         type: asset.type,
@@ -124,23 +127,53 @@ export default {
         shares: asset.shares,
         payment: asset.payment,
         price: asset.price,
+        latestSource: asset.latestSource,
+        latestTime: asset.latestTime,
         company: asset.company
       };
       updAsset[propStr] = e.srcElement.value;
-      if (propStr==='symbol') {
-        updAsset.amount = 0;
-        updAsset.price = 0;
-        updAsset.company = '';
-// look up the new stock information in store.js
-      }
-      if (propStr==='shares') {
+      if (propStr==="shares") {
         updAsset.amount = Number(updAsset.price * updAsset.shares).toDecFormat(2);
       }
-      this.$store.dispatch('updateAsset', updAsset);
+      if (propStr==="symbol") {
+        if (updAsset.symbol) {
+          let requestStr = this.$store.state.localUrlStr + this.$store.state.stockStr + this.$store.state.priceStr + updAsset.symbol;
+          console.log(`requestStr=${requestStr}`);
+          return axios.get(requestStr)
+            .then ((resp) => {
+              console.log(resp.data);
+              updAsset.price = resp.data.latestPrice.toDecFormat(2);
+              updAsset.latestSource = resp.data.latestSource;
+              updAsset.latestTime =
+              resp.data.latestTime;
+              updAsset.company = resp.data.companyName;
+              updAsset.amount = Number(resp.data.latestPrice * updAsset.shares).toDecFormat(2);
+              this.$store.dispatch("updateAsset", updAsset);
+            })
+            .catch ((error) => {
+              console.log(`post error=`,error);
+              throw (error)
+            });
+        }
+        else {
+          updAsset.price = undefined;
+          updAsset.latestSource = "";
+          updAsset.latestTime = "";
+          updAsset.company= "";
+          this.$store.dispatch("updateAsset", updAsset);
+        }
+      }
+      else {
+        this.$store.dispatch("updateAsset", updAsset);
+      }
     }
   }
 }
 </script>
 
 <style lang="css" scoped>
+input {
+  max-width: 90%;
+}
+
 </style>

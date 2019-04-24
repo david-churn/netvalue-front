@@ -90,4 +90,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
+input {
+  max-width: 90%;
+}
 </style>

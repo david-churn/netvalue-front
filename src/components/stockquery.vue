@@ -59,24 +59,15 @@ export default {
   methods: {
     queryAPI() {
       if (this.stockObj.symbol) {
-        let iexPrefix = this.$store.state.iexUrlStr + this.$store.state.iexStockStr + this.stockObj.symbol;
-        let iexRequest = iexPrefix + this.$store.state.iexPriceStr;
-        console.log(`iexRequest=${iexRequest}`);
-        axios.get(iexRequest)
+        let requestStr = this.$store.state.localUrlStr + this.$store.state.StockStr + this.$store.state.companyStr + this.stockObj.symbol;
+        console.log(`requestStr=${requestStr}`);
+        axios.get(requestStr)
           .then ((resp) => {
             console.log(resp.data);
             this.stockObj.latestPrice = resp.data.latestPrice.toDecFormat(2);
             this.stockObj.latestSource = resp.data.latestSource;
             this.stockObj.latestTime =
             resp.data.latestTime;
-          })
-          .then ( () => {
-            iexRequest = iexPrefix + this.iexCompanyStr
-            console.log(`iexRequest=${iexRequest}`);
-            return axios.get(iexRequest)
-          })
-          .then ((resp) => {
-            console.log(resp.data);
             this.stockObj.companyName = resp.data.companyName;
             this.stockObj.exchange = resp.data.exchange;
             this.stockObj.industry = resp.data.industry;

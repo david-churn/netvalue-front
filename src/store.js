@@ -10,89 +10,30 @@ export default new Vuex.Store({
 // complains when store data updated outside mutations. Remove for production.
   strict: true,
   state: {
+    companyStr: "company/",
     deleteStr: "delete",
-    iexUrlStr: "https://api.iextrading.com/1.0",
-    iexPriceStr: "/quote?filter=companyName,latestPrice,latestSource,latestTime",
-    iexStockStr: "/stock/",
     localUrlStr: "http://localhost:3000/",
+    netValueStr: "nv/",
+    priceStr: "price/",
     profileStr: "profile/",
+    stockStr: "stock/",
 
-//  profile information
     profileObj: {},
 //  id, type, symbol, description, apr, payment, shares, price, amount
     assets: [
-      {
-        id: 2
-      , type: "other"
-      , description: "Cash"
-      , amount: 12345.12
-      },
-      {
-        id: 3
-      , type: "saving"
-      , description: "Bank Savings"
-      , apr: 0.004
-      , amount: 200
-      , payment: 50
-      },
-      {
-        id: 5
-      , type: "saving"
-      , description: "Bank Checking"
-      , apr: 0.001
-      , amount: 20000
-      },
-      {
-        id: 7
-      , type: "stock"
-      , amount: 3002.27
-      , symbol: "UHG"
-      , description: "Her Stock"
-      , shares: 15.0001
-      , payment: 0
-      , price: 200.15
-      , company: "United Healthcare Group"
-      },
-      {
-        id: 19
-      , type: "other"
-      , description: "home"
-      , amount: 83500
-      },
-      {
-        id: 23
-      , type: "other"
-      , description: "life insurance policy"
-      , amount: 14238.75
+      { id: 0,
+        type: "other",
+        symbol: null,
+        description: "Cash",
+        apr: null,
+        payment: null,
+        shares: null,
+        price: null,
+        amount: 0
       }
-  ],
+    ],
 //  id, type, description, apr, payment, amount
-    debts: [
-      {
-        id: 29
-      , type: "loan"
-      , description: "home mortgage"
-      , apr : 0.02
-      , payment: 893.56
-      , amount: 45678.90
-      },
-      {
-        id: 31
-      , type: "loan"
-      , description: "car loan"
-      , apr: 0.05
-      , payment: 300
-      , amount: 6700
-      },
-      {
-        id: 37
-      , type: "loan"
-      , description: "VISA"
-      , apr: 0.18
-      , payment: 300
-      , amount: 6700
-      }
-    ]
+    debts: []
   },
   getters: {
     activeAssets(state) {
@@ -111,6 +52,7 @@ export default new Vuex.Store({
       return state.debts
         .filter(debt => debt.type === whichType);
     },
+// Is this redundant?  can just access this.$state.store.profileObj in views/components?
     personProfile(state) {
       return state.profileObj;
     }
@@ -141,14 +83,13 @@ export default new Vuex.Store({
       context.commit("deleteProfile", personID);
     },
     fetchProfile(context,userObj) {
-      console.log(`google userObj=`, userObj);
       let fetchStr = this.state.localUrlStr + this.state.profileStr + "gid/" + userObj.uid;
-      console.log(`fetchStr=${fetchStr}`);
       axios.get(fetchStr)
         .then ((resp) => {
           if (!resp.data.errors) {
             console.log(resp.data);
-            context.commit("fetchProfile",resp.data)
+            context.commit("fetchProfile",resp.data);
+            this.dispatch("readNetValue");
           }
           else {
             console.log(resp.data.errors);
@@ -167,6 +108,36 @@ export default new Vuex.Store({
     },
     updateProfile(context,personObj) {
       context.commit("updateProfile", personObj);
+    },
+    readNetValue(context) {
+      let requestStr = this.state.localUrlStr + this.state.netValueStr + "read/" + this.state.profileObj.personID;
+      console.log(`readNetValue (${requestStr})`);
+      axios.get(requestStr)
+        .then ((resp) => {
+          console.log(resp.data);
+          context.commit("readNetValue",resp.data);
+        })
+        .catch ((error) => {
+          console.log(`post error=`,error);
+          throw (error);
+        })
+    },
+    saveNetValue(context) {
+      let requestStr = this.state.localUrlStr + this.state.netValueStr + "write/" + this.state.profileObj.personID;
+      let requestObj = {
+        assets: this.state.assets,
+        debts: this.state.debts
+      };
+      console.log(`saveNetValue (${requestStr})=`,requestObj);
+      axios.post(requestStr, requestObj)
+        .then ((resp) => {
+          console.log(resp.data);
+          context.commit("saveNetValue",resp.data);
+        })
+        .catch ((error) => {
+          console.log(`post error=`,error);
+          throw (error);
+        })
     }
   },
   mutations: {
@@ -223,7 +194,7 @@ export default new Vuex.Store({
     },
     fetchProfile(state,personObj) {
       state.profileObj = {
-        personId: personObj.personID,
+        personID: personObj.personID,
         lastLogInTsp: moment(personObj.lastLogInTsp).format("MMMM Do YYYY, h:mm:ss a"),
         updatedAt: moment(personObj.updatedAt).format("MMMM Do YYYY, h:mm:ss a"),
         nickNm: personObj.nickNm,
@@ -272,6 +243,16 @@ export default new Vuex.Store({
           console.log(`post error=`,error);
           throw (error)
         })
+    },
+// read the asset information from the database.
+    readNetValue(state,netValueObj) {
+      state.assets = netValueObj.assets;
+      state.debts = netValueObj.debts;
+    },
+// save the asset information to the database.
+    saveNetValue(state,netValueObj) {
+      state.assets = netValueObj.assets;
+      state.debts = netValueObj.debts;
     }
   }
 })
