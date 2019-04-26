@@ -1,47 +1,52 @@
 <template>
   <div class="loans">
-    <h3 class="row">
-      <div class="col-amount">{{ subtotalAmt }}</div>
-      <div class="flex7">{{ title }}</div>
-      <div class="col-amount">{{ subtotalPayment }}</div>
-      <div class="flex1"></div>
-    </h3>
-    <div class="row" v-show="loansDebts.length > 0">
+    <h3 class="center">{{ title }}</h3>
+    <div class="row">
       <div class="col-amount">Balance</div>
-      <div class="flex6">Description</div>
-      <div class="flex1">APR</div>
       <div class="flex2">Monthly Payment</div>
-      <div class="flex1">Action</div>
-    </div>
-    <div class="row"
-      v-for="(debt,index) in loansDebts" :key="index">
-      <div class="col-amount">
-        <input type="number" step=".01" class="amt"
-          :value="debt.amount"
-          @change="updateRow($event,debt,'amount')">
-      </div>
-      <div class="flex6">
-        <input type="text"
-          :value="debt.description"
-          @change="updateRow($event,debt,'description')">
-      </div>
-      <div class="flex1">
-        <input type="number" step=".0001" class="amt"
-          :value="debt.apr"
-          @change="updateRow($event,debt,'apr')">
-      </div>
-      <div class="col-amount">
-        <input type="number" step=".01" class="amt"
-          v-model="debt.payment"
-          @change="updateRow($event,debt,'payment')">
-      </div>
-      <div class="flex1">
-        <button type="button" @click="deleteRow(debt.id)">remove</button>
-      </div>
     </div>
     <div class="row">
-      <button type="button" @click="addRow">Add Loan</button>
+      <div class="col-amount">{{ subtotalAmt }}</div>
+      <div class="col-amount">{{ subtotalPayment }}</div>
     </div>
+    <hr>
+    <div v-for="(debt,index) in loansDebts" :key="index">
+      <div class="row">
+        <div class="flex2 label">Description:</div>
+        <div class="flex2 right">
+          <input type="text"
+            :value="debt.description"
+            @change="updateRow($event,debt,'description')">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-amount">Balance:</div>
+        <div class="col-amount">
+          <input type="number" step=".01" class="right"
+            :value="debt.amount"
+            @change="updateRow($event,debt,'amount')">
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex2 right">Monthly Payment:</div>
+        <div class="col-amount">
+          <input type="number" step=".01" class="right"
+            v-model="debt.payment"
+            @change="updateRow($event,debt,'payment')">
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex2 right">Annual Percent:</div>
+        <div class="col-amount">
+          <input type="number" step=".0001" class="right"
+            :value="debt.apr"
+            @change="updateRow($event,debt,'apr')">
+        </div>
+      </div>
+      <button type="button" @click="deleteRow(debt.id)">remove</button>
+      <hr>
+    </div>
+    <button type="button" @click="addRow">Add Loan</button>
   </div>
 </template>
 

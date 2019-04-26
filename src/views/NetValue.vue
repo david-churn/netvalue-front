@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import {mapGetters} from "vuex";
 // third party
 import firebase from "firebase";
@@ -60,6 +61,19 @@ export default {
   data: function () {
     return {
       title: "Net Value",
+      errorToast: {
+        position: 'top-center',
+        duration: 5000,
+        fullWidth: true,
+        fitToScren: true,
+        type: 'error'
+      },
+      successToast: {
+        position: 'top-center',
+        duration: 2000,
+        type: 'success',
+        theme: 'bubble'
+      }
     }
   },
   created () {
@@ -76,17 +90,23 @@ export default {
     })
   },
   computed: {
+    decPt: function() {
+      return this.$store.state.profileObj.decimalStr;
+    },
+    sepPt: function() {
+      return this.$store.state.profileObj.separatorStr;
+    },
     subtotalAssetsAmt: function () {
       return this.activeAssets
         .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
         .reduce((total, amount) => total + amount, 0)
-        .toDecFormat(2);
+        .toDecFormat(2,3,this.sepPt,this.decPt);
     },
     subtotalDebtsAmt: function () {
       return this.activeDebts
         .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
         .reduce((total, amount) => total + amount, 0)
-        .toDecFormat(2);
+        .toDecFormat(2,3,this.sepPt,this.decPt);
     },
     totalAmt: function () {
       return Number(
@@ -96,7 +116,7 @@ export default {
         - this.activeDebts
             .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
             .reduce((total, amount) => total + amount, 0)
-        ).toDecFormat(2);
+        ).toDecFormat(2,3,this.sepPt,this.decPt);
     },
     ...mapGetters([
       "activeAssets",
@@ -107,9 +127,11 @@ export default {
   methods: {
     saveNetValue () {
       this.$store.dispatch("saveNetValue");
+      Vue.toasted.show('Saving', this.successToast);
     },
     resetNetValue () {
       this.$store.dispatch("readNetValue");
+      Vue.toasted.show('Reading', this.successToast);
     }
   }
 }

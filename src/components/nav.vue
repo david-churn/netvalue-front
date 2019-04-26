@@ -14,9 +14,6 @@
       <router-link to="/profile">Profile</router-link>
     </div>
     <div class="flex1 box">
-      <router-link to="/about">About</router-link>
-    </div>
-    <div class="flex1 box">
       <span v-if="authorized">
         <button type="button" @click="logout">Sign Out</button>
       </span>

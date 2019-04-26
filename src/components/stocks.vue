@@ -1,63 +1,65 @@
 <template>
   <div class="stocks">
-    <h3 class="row">
+    <h3 class="center">{{ title }}</h3>
+    <div class="row">
+      <div class="flex2 right">Balance</div>
+      <div class="flex2 right">Annual Dividends</div>
+    </div>
+    <div class="row">
       <div class="col-amount">{{ subtotalAmt }}</div>
-      <div class="flex7">{{ title }}</div>
       <div class="col-amount">{{ subtotalDividend }}</div>
-      <div class="flex1"></div>
-    </h3>
-    <div class="row">
-      <div class="col-amount">Balance</div>
-      <div class="col-amount">Shares</div>
-      <div class="flex1">Symbol</div>
-      <div class="flex4">Description</div>
-      <div class="col-amount">Annual Dividends</div>
-      <div class="flex1">Action</div>
     </div>
-    <div class="row">
-      <div class="flex2"></div>
-      <div class="col-amount">Price</div>
-      <div class="flex8">Company Name</div>
-    </div>
-    <div v-if="stocksAssets.length">
-      <div
-        v-for="(asset,index) in stocksAssets" :key="index">
-        <div class="row">
-          <div class="col-amount">{{ asset.amount }}</div>
-          <div class="col-amount">
-            <input type="number" step=".000001" class="amt"
-              :value="asset.shares"
-              @change="updateRow($event,asset,'shares')">
-          </div>
-          <div class="flex1">
-            <input type="text"
-              :value="asset.symbol"
-              @change="updateRow($event,asset,'symbol')">
-          </div>
-          <div class="flex4">
-            <input type="text"
-               :value="asset.description"
-               @change="updateRow($event,asset,'description')">
-          </div>
-          <div class="col-amount">
-            <input type="number" step=".01" class="amt"
-              :value="asset.payment"
-              @change="updateRow($event,asset,'payment')">
-          </div>
-          <div class="flex1">
-            <button type="button" @click="deleteRow(asset.id)">remove</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="flex2"></div>
-          <div class="col-amount">{{ asset.price }}</div>
-          <div class="flex8">{{ asset.company }}</div>
+    <hr>
+    <div v-for="(asset,index) in stocksAssets" :key="index">
+      <div class="row">
+        <div class="flex2 label">Description:</div>
+        <div class="flex2">
+          <input type="text"
+             :value="asset.description"
+             @change="updateRow($event,asset,'description')">
         </div>
       </div>
+      <div class="row">
+        <div class="col-amount">Balance</div>
+        <div class="col-amount">{{ asset.amount }}</div>
+      </div>
+      <div class="row">
+        <div class="col-amount">Shares:</div>
+        <div class="col-amount">
+          <input type="number" step=".000001" class="right"
+            :value="asset.shares"
+            @change="updateRow($event,asset,'shares')">
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex2 label">Symbol:</div>
+        <div class="flex2 right">
+          <input type="text"
+            :value="asset.symbol"
+            @change="updateRow($event,asset,'symbol')">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-amount">Price:</div>
+        <div class="col-amount">{{ asset.price }}</div>
+      </div>
+      <div class="right">{{ asset.latestSource}} at {{ asset.latestTime}}</div>
+      <div class="row">
+        <div class="flex2 label">Company Name:</div>
+        <div class="flex2">{{ asset.company }}</div>
+      </div>
+      <div class="row">
+        <div class="col-amount">Annual Dividends</div>
+        <div class="col-amount">
+          <input type="number" step=".01" class="right"
+            :value="asset.payment"
+            @change="updateRow($event,asset,'payment')">
+        </div>
+      </div>
+      <button type="button" @click="deleteRow(asset.id)">remove</button>
+      <hr>
     </div>
-    <div class="row">
-      <button type="button" @click="addRow">Add Stock</button>
-    </div>
+    <button type="button" @click="addRow">Add Stock</button>
   </div>
 </template>
 
@@ -77,17 +79,23 @@ export default {
     }
   },
   computed: {
+    decPt: function() {
+      return this.$store.state.profileObj.decimalStr;
+    },
+    sepPt: function() {
+      return this.$store.state.profileObj.separatorStr;
+    },
     subtotalAmt: function () {
       return this.stocksAssets
         .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
         .reduce((total, amount) => total + amount, 0)
-        .toDecFormat(2);
+        .toDecFormat(2,3,this.sepPt,this.decPt);
     },
     subtotalDividend: function() {
       return this.stocksAssets
         .map(asset => Number.isFinite(Number(asset.payment)) ? Number(asset.payment) : 0)
         .reduce((total, payment) => total + payment, 0)
-        .toDecFormat(2);
+        .toDecFormat(2,3,this.sepPt,this.decPt);
     },
     stocksAssets: function () {
       return this.typeAssets(this.type);
@@ -136,12 +144,12 @@ export default {
       }
       if (propStr==="symbol") {
         if (updAsset.symbol) {
-          let requestStr = this.$store.state.localUrlStr + this.$store.state.stockStr + this.$store.state.priceStr + updAsset.symbol;
+          let requestStr = this.$store.state.localUrlStr + this.$store.state.stockStr + this.$store.state.priceStr + encodeURIComponent(updAsset.symbol);
           console.log(`requestStr=${requestStr}`);
           return axios.get(requestStr)
             .then ((resp) => {
               console.log(resp.data);
-              updAsset.price = resp.data.latestPrice.toDecFormat(4);
+              updAsset.price = resp.data.latestPrice.toDecFormat(4,3,this.sepPt,this.decPt);
               updAsset.latestSource = resp.data.latestSource;
               updAsset.latestTime =
               resp.data.latestTime;

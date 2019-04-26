@@ -37,13 +37,13 @@
     <div class="row">
       <div class="col-amount">Ending Balance:</div>
       <div class="flex10">
-        {{ balanceAmt.toDecFormat(2)}}
+        {{ balanceAmt.toDecFormat(2,3,this.sepPt,this.decPt)}}
       </div>
     </div>
     <div class="row">
       <div class="col-amount">Earnings:</div>
       <div class="flex10">
-        {{ earningAmt.toDecFormat(2)}}
+        {{ earningAmt.toDecFormat(2,3,this.sepPt,this.decPt)}}
       </div>
     </div>
     <p class="small">Results are estimates for planning.  Assumes monthly compound interest for monthly payments.</p>
@@ -62,6 +62,14 @@ export default {
       periodQty: 0,
       principleAmt: 0,
       title: "Periodic Payments",
+    }
+  },
+  computed: {
+    decPt: function() {
+      return this.$store.state.profileObj.decimalStr;
+    },
+    sepPt: function() {
+      return this.$store.state.profileObj.separatorStr;
     }
   },
   methods: {

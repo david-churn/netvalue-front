@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <navCmp/>
-    <h1>{{ title }}</h1>
+    <h1>{{ title }} for {{ this.$store.state.profileObj.nickNm}}</h1>
     <router-view/>
+    <footer class="center">&copy; 2019</footer>
   </div>
 </template>
 
@@ -15,7 +16,7 @@ export default {
     navCmp },
   data: function () {
     return {
-      title: 'Simple Net Value',
+      title: 'Net Value',
     }
   }
 }
@@ -41,6 +42,10 @@ h1 {
 }
 body {
   margin: 1% 5%;
+}
+.toasted-container .toasted.bubble {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-size: 1.5em;
 }
 .amt {
   text-align: right;

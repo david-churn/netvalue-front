@@ -20,15 +20,13 @@
       <div class="">Last log in: {{ profileObj.lastLogInTsp }}</div>
       <div class="">Last profile change: {{ profileObj.updatedAt }}</div>
     </div>
-    <div class="">
-      <p>{{ messageTx }}</p>
-    </div>
   </div>
 </template>
 
 <script>
-import firebase from "firebase";
+import Vue from 'vue';
 import { mapState } from "vuex";
+import firebase from "firebase";
 import _ from "lodash";
 
 export default {
@@ -41,9 +39,21 @@ export default {
       emailStr: "",
       decimalStr: "",
       separatorStr: "",
-
       exampleNbr: 0,
-      messageTx: "who ARE you?",
+
+      errorToast: {
+        position: 'top-center',
+        duration: 5000,
+        fullWidth: true,
+        fitToScren: true,
+        type: 'error'
+      },
+      successToast: {
+        position: 'top-center',
+        duration: 2000,
+        type: 'success',
+        theme: 'bubble'
+      }
     }
   },
   created () {
@@ -76,6 +86,7 @@ export default {
         separatorStr: this.separatorStr
       }
       this.$store.dispatch("updateProfile", updateObj);
+      Vue.toasted.show('Updating', this.successToast);
     }
   }
 }

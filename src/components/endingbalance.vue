@@ -37,13 +37,13 @@
     <div class="row">
       <div class="col-amount">Ending Balance:</div>
       <div class="flex10">
-        {{ balanceAmt.toDecFormat(2)}}
+        {{ balanceAmt.toDecFormat(2,3,this.sepPt,this.decPt)}}
       </div>
     </div>
     <div class="row">
       <div class="col-amount">Earnings:</div>
       <div class="flex10">
-        {{ earningAmt.toDecFormat(2)}}
+        {{ earningAmt.toDecFormat(2,3,this.sepPt,this.decPt)}}
       </div>
     </div>
     <div class="row">
@@ -69,6 +69,14 @@ export default {
       principleAmt: 0,
       resultAmt: 0,
       title: "Desired Balance",
+    }
+  },
+  computed: {
+    decPt: function() {
+      return this.$store.state.profileObj.decimalStr;
+    },
+    sepPt: function() {
+      return this.$store.state.profileObj.separatorStr;
     }
   },
   methods: {

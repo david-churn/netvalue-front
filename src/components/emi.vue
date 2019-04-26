@@ -30,19 +30,19 @@
     <div class="row">
       <div class="col-amount">Monthly Payment:</div>
       <div class="flex10">
-        {{ paymentAmt.toDecFormat(2)}}
+        {{ paymentAmt.toDecFormat(2,3,this.sepPt,this.decPt)}}
       </div>
     </div>
     <div class="row">
       <div class="col-amount">Total Paid:</div>
       <div class="flex10">
-        {{ totalAmt.toDecFormat(2)}}
+        {{ totalAmt.toDecFormat(2,3,this.sepPt,this.decPt)}}
       </div>
     </div>
     <div class="row">
       <div class="col-amount">Total Cost:</div>
       <div class="flex10">
-        {{ costAmt.toDecFormat(2)}}
+        {{ costAmt.toDecFormat(2,3,this.sepPt,this.decPt)}}
       </div>
     </div>
     <p class="small">Results are estimates for planning.  Assumes monthly compound interest for monthly payments.</p>
@@ -59,8 +59,16 @@ export default {
       paymentAmt: 0,
       periodQty: 0,
       principleAmt: 0,
-      title: "Periodic Payments",
+      title: "Equated Monthly Installment",
       totalAmt: 0,
+    }
+  },
+  computed: {
+    decPt: function() {
+      return this.$store.state.profileObj.decimalStr;
+    },
+    sepPt: function() {
+      return this.$store.state.profileObj.separatorStr;
     }
   },
   methods: {

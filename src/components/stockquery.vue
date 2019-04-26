@@ -56,15 +56,23 @@ export default {
       title: "Stock Look Up",
     }
   },
+  computed: {
+    decPt: function() {
+      return this.$store.state.profileObj.decimalStr;
+    },
+    sepPt: function() {
+      return this.$store.state.profileObj.separatorStr;
+    }
+  },
   methods: {
     queryAPI() {
       if (this.stockObj.symbol) {
-        let requestStr = this.$store.state.localUrlStr + this.$store.state.stockStr + this.$store.state.companyStr + this.stockObj.symbol;
+        let requestStr = this.$store.state.localUrlStr + this.$store.state.stockStr + this.$store.state.companyStr + encodeURIComponent(this.stockObj.symbol);
         console.log(`requestStr=${requestStr}`);
         axios.get(requestStr)
           .then ((resp) => {
             console.log(resp.data);
-            this.stockObj.latestPrice = resp.data.latestPrice.toDecFormat(2);
+            this.stockObj.latestPrice = resp.data.latestPrice.toDecFormat(2,3,this.sepPt,this.decPt);
             this.stockObj.latestSource = resp.data.latestSource;
             this.stockObj.latestTime =
             resp.data.latestTime;

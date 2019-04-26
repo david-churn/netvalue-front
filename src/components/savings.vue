@@ -13,7 +13,7 @@
     <div v-for="(asset,index) in savingsAssets" :key="index">
       <div class="row">
         <div class="flex2 label">Description:</div>
-        <div class="right">
+        <div class="flex2 right">
           <input type="text"
             :value="asset.description"
             @change="updateRow($event, asset, 'description')">
@@ -65,17 +65,23 @@ export default {
     }
   },
   computed: {
+    decPt: function() {
+      return this.$store.state.profileObj.decimalStr;
+    },
+    sepPt: function() {
+      return this.$store.state.profileObj.separatorStr;
+    },
     subtotalAmt: function () {
       return this.savingsAssets
         .map(asset => Number.isFinite(Number(asset.amount)) ? Number(asset.amount) : 0)
         .reduce((total, amount) => total + amount, 0)
-        .toDecFormat(2);
+        .toDecFormat(2,3,this.sepPt,this.decPt);
     },
     subtotalContrib: function() {
       return this.savingsAssets
         .map(asset => Number.isFinite(Number(asset.payment)) ? Number(asset.payment) : 0)
         .reduce((total, payment) => total + payment, 0)
-        .toDecFormat(2);
+        .toDecFormat(2,3,this.sepPt,this.decPt);
     },
     savingsAssets: function () {
       return this.typeAssets(this.type);
