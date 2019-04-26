@@ -1,47 +1,52 @@
 <template lang="html">
   <div class="savings">
-    <h3 class="row">
+    <h3 class="center">{{ title }}</h3>
+    <div class="row">
+      <div class="flex2 right">Balance</div>
+      <div class="flex2 right">Monthly Contribution</div>
+    </div>
+    <div class="row">
       <div class="col-amount">{{ subtotalAmt }}</div>
-      <div class="flex7">{{ title }}</div>
       <div class="col-amount">{{ subtotalContrib }}</div>
-      <div class="flex1"></div>
-    </h3>
-    <div class="row">
-      <div class="col-amount">Balance</div>
-      <div class="flex6">Description</div>
-      <div class="flex1">APR</div>
-      <div class="flex2">Monthly Contribution</div>
-      <div class="flex1">Action</div>
     </div>
-    <div class="row"
-      v-for="(asset,index) in savingsAssets" :key="index">
-      <div class="col-amount">
-        <input type="number" step=".01" min="0" class="amt"
-          :value="asset.amount"
-          @change="updateRow($event, asset,'amount')">
+    <hr>
+    <div v-for="(asset,index) in savingsAssets" :key="index">
+      <div class="row">
+        <div class="flex2 label">Description:</div>
+        <div class="right">
+          <input type="text"
+            :value="asset.description"
+            @change="updateRow($event, asset, 'description')">
+        </div>
       </div>
-      <div class="flex6">
-        <input type="text"
-          :value="asset.description"
-          @change="updateRow($event, asset, 'description')">
+      <div class="row">
+        <div class="flex2 label">Balance:</div>
+        <div class="col-amount">
+          <input type="number" step=".01" min="0" class="right"
+            :value="asset.amount"
+            @change="updateRow($event, asset,'amount')">
+        </div>
       </div>
-      <div class="flex1">
-        <input type="number" step=".0001" min="0" class="amt"
-          :value="asset.apr"
-          @change="updateRow($event, asset, 'apr')">
+      <div class="row">
+        <div class="flex2 label">Monthly Contribution:</div>
+        <div class="col-amount">
+          <input type="number" step=".01" min="0" class="right"
+            :value="asset.payment"
+            @change="updateRow($event, asset, 'payment')">
+        </div>
       </div>
-      <div class="col-amount">
-        <input type="number" step=".01" min="0" class="amt"
-          :value="asset.payment"
-          @change="updateRow($event, asset, 'payment')">
+      <div class="row">
+        <div class="flex2 label">Annual Percent:</div>
+        <div class="col-amount">
+          <input type="number" step=".0001" min="0" class="right"
+            :value="asset.apr"
+            @change="updateRow($event, asset, 'apr')">
+        </div>
       </div>
-      <div class="flex1">
-        <button type="button" @click="deleteRow(asset.id)">remove</button>
-      </div>
+      <button type="button" @click="deleteRow(asset.id)">remove</button>
+      <hr>
     </div>
-    <div class="row">
-      <button type="button" @click="addRow">Add Savings</button>
-    </div>
+    <button type="button" @click="addRow">Add Savings</button>
   </div>
 </template>
 
@@ -113,5 +118,7 @@ export default {
 input {
   max-width: 90%;
 }
-
+button {
+  margin: 1%;
+}
 </style>

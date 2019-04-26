@@ -9,9 +9,6 @@
 <script>
 import navCmp from './components/nav.vue';
 
-//shrink this to just what is needed
-// const _ = require('lodash');
-
 export default {
   name: "app",
   components: {
@@ -39,23 +36,23 @@ $greenish: #c5efcb;
   -moz-osx-font-smoothing: grayscale;
   color: $blackish;
 }
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: $blackish;
-    &.router-link-exact-active {
-      color: orange;
-    }
-  }
-}
 h1 {
   text-align: center;
 }
 body {
-  margin: 1%;
+  margin: 1% 5%;
 }
 .amt {
+  text-align: right;
+}
+.center {
+  text-align: center;
+}
+.label {
+  text-align: right;
+  margin: 0 1% 0 0;
+}
+.right {
   text-align: right;
 }
 .row {
@@ -104,4 +101,25 @@ body {
 .flex12 {
   flex: 12;
 }
+* {
+  box-sizing: border-box;
+  background: green;
+  color: $whitish;
+}
+// responsive changes
+//  tablet sized
+@media (min-width: 768px) {
+  * {
+    background: lightgreen;
+    color: $blackish;
+  }
+}
+//  pc sized
+@media (min-width: 1280px) {
+  * {
+    background: $greenish;
+    color: $blackish;
+  }
+}
+
 </style>

@@ -59,7 +59,7 @@ export default {
   methods: {
     queryAPI() {
       if (this.stockObj.symbol) {
-        let requestStr = this.$store.state.localUrlStr + this.$store.state.StockStr + this.$store.state.companyStr + this.stockObj.symbol;
+        let requestStr = this.$store.state.localUrlStr + this.$store.state.stockStr + this.$store.state.companyStr + this.stockObj.symbol;
         console.log(`requestStr=${requestStr}`);
         axios.get(requestStr)
           .then ((resp) => {

@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <div id="fbui-auth"></div>
+    <div class="border">
+      <div id="fbui-auth"></div>
+    </div>
   </div>
 </template>
 
@@ -37,3 +39,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.border {
+  border: solid 1px black;
+}
+
+</style>

@@ -132,7 +132,7 @@ export default {
       };
       updAsset[propStr] = e.srcElement.value;
       if (propStr==="shares") {
-        updAsset.amount = Number(updAsset.price * updAsset.shares).toDecFormat(2);
+        updAsset.amount = Number(updAsset.price * updAsset.shares).toFixed(2);
       }
       if (propStr==="symbol") {
         if (updAsset.symbol) {
@@ -146,7 +146,7 @@ export default {
               updAsset.latestTime =
               resp.data.latestTime;
               updAsset.company = resp.data.companyName;
-              updAsset.amount = Number(resp.data.latestPrice * updAsset.shares).toDecFormat(2);
+              updAsset.amount = Number(resp.data.latestPrice * updAsset.shares).toFixed(2);
               console.log(`unrounded ${updAsset.amount}=${resp.data.latestPrice}*${updAsset.shares}`);
               this.$store.dispatch("updateAsset", updAsset);
             })
