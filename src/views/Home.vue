@@ -7,7 +7,9 @@
 </template>
 
 <script>
-import firebase from 'firebase';
+// import firebase from 'firebase';
+import firebase from 'firebase/app';
+require('firebase/auth');
 import firebaseui from 'firebaseui';
 import '../utils/firebaseConfig.js';
 import 'firebaseui/dist/firebaseui.css';

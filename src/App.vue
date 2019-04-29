@@ -3,6 +3,7 @@
     <navCmp/>
     <h1>{{ title }} for {{ this.$store.state.profileObj.nickNm}}</h1>
     <router-view/>
+    <hr>
     <footer class="center">&copy; 2019</footer>
   </div>
 </template>

@@ -36,11 +36,11 @@
         </div>
       </div>
       <div class="row">
-        <div class="flex2 label">Annual Percent:</div>
+        <div class="flex2 label">Annual Interest:</div>
         <div class="col-amount">
           <input type="number" step=".0001" min="0" class="right"
             :value="asset.apr"
-            @change="updateRow($event, asset, 'apr')">
+            @change="updateRow($event, asset, 'apr')">%
         </div>
       </div>
       <button type="button" @click="deleteRow(asset.id)">remove</button>

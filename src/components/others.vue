@@ -7,10 +7,15 @@
     <div v-for="(asset,index) in otherAssets" :key="index">
       <div class="row">
         <div class="flex2 label">Description:</div>
-        <div class="flex2 right">
+        <div class="flex2">
           <input type="text"
+            v-show="asset.description!='Cash'"
             :value="asset.description"
             @change="updateRow($event,asset,'description')">
+            <div class="flex2"
+              v-show="asset.description=='Cash'">
+              {{ asset.description }}
+            </div>
         </div>
       </div>
       <div class="row">

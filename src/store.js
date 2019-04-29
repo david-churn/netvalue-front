@@ -2,9 +2,11 @@ import Vue from "vue"
 import Vuex from "vuex"
 import _ from "lodash";
 import axios from "axios";
+import firebase from 'firebase/app';
+require('firebase/auth');
 import moment from "moment";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
 // complains when store data updated outside mutations. Remove for production.
@@ -18,6 +20,7 @@ export default new Vuex.Store({
     profileStr: "profile/",
     stockStr: "stock/",
 
+//  personID, createdAt, decimalStr, emailStr, gID, lastLogInTsp, nickNm, separatorStr, updatedAt
     profileObj: {},
 //  id, type, symbol, description, apr, payment, shares, price, amount
     assets: [
@@ -62,16 +65,50 @@ export default new Vuex.Store({
       context.commit("deleteAsset", id);
     },
     insertAsset(context,assetObj) {
-      context.commit("insertAsset", assetObj);
+      let fetchStr = this.state.localUrlStr + this.state.netValueStr
+        + "gid/" + this.state.uid
+        + "/" + encodeURIComponent(assetObj.type);
+      axios.get(fetchStr)
+        .then ((resp) => {
+          if (!resp.data.errors) {
+            console.log(resp.data);
+            assetObj.id = resp.data.dataValues.assetID;
+            context.commit("insertAsset", assetObj);
+          }
+          else {
+            console.log(resp.data.errors);
+          }
+        })
+        .catch ((error) => {
+          console.log(`post error=`,error);
+          throw (error)
+        });
     },
     updateAsset(context,assetObj) {
-      context.commit("updateAsset", assetObj);
+        context.commit("updateAsset", assetObj);
     },
     deleteDebt(context,id) {
       context.commit("deleteDebt", id);
     },
     insertDebt(context,debtObj) {
-      context.commit("insertDebt", debtObj);
+      let fetchStr = this.state.localUrlStr + this.state.netValueStr
+        + "gid/" + this.state.uid
+        + "/" + encodeURIComponent(debtObj.type);
+      axios.get(fetchStr)
+        .then ((resp) => {
+          if (!resp.data.errors) {
+            console.log(resp.data);
+            debtObj.id = resp.data.dataValues.debtID;
+            context.commit("insertDebt", debtObj);
+          }
+          else {
+            console.log(resp.data.errors);
+          }
+        })
+        .catch ((error) => {
+          console.log(`post error=`,error);
+          throw (error)
+        });
     },
     updateDebt(context,debtObj) {
       context.commit("updateDebt", debtObj);
@@ -80,7 +117,22 @@ export default new Vuex.Store({
       context.commit("clearProfile");
     },
     deleteProfile(context,personID) {
-      context.commit("deleteProfile", personID);
+      let delStr = this.state.localUrlStr + this.state.profileStr + "deluser/" + personID;
+      console.log(`delStr=${delStr}`);
+      axios.delete(delStr)
+        .then ((resp) => {
+          if (!resp.data.errors) {
+            console.log(resp.data);
+            context.commit("deleteProfile");
+          }
+          else {
+            console.log(resp.data.errors);
+          }
+        })
+        .catch ((error) => {
+          console.log(`delete error=`,error);
+          throw (error);
+        })
     },
     fetchProfile(context,userObj) {
       let fetchStr = this.state.localUrlStr + this.state.profileStr + "gid/" + userObj.uid;
@@ -146,6 +198,7 @@ export default new Vuex.Store({
       state.assets[assetIdx].type = state.deleteStr;
     },
     insertAsset(state,assetObj) {
+      assetObj.description = assetObj.description==="Cash" ? "cash" : assetObj.description;
       state.assets.push(assetObj);
     },
     updateAsset(state,updateObj) {
@@ -174,23 +227,17 @@ export default new Vuex.Store({
     clearProfile(state) {
       state.profileObj = {};
     },
-    deleteProfile(state,personID) {
-      let delStr = state.localUrlStr + state.profileStr + "deluser/" + personID;
-      console.log(`delStr=${delStr}`);
-      axios.delete(delStr)
-        .then ((resp) => {
-          if (!resp.data.errors) {
-            console.log(resp.data);
-            state.profile = {};
-          }
-          else {
-            console.log(resp.data.errors);
-          }
+    deleteProfile(state) {
+      state.profile = {};
+      state.assets = [];
+      state.debts = [];
+      firebase.auth().signOut()
+        .then(function() {
+          console.log('Signed Out!');
         })
-        .catch ((error) => {
-          console.log(`delete error=`,error);
-          throw (error);
-        })
+        .catch(function(error) {
+          console.error('Sign Out Error', error);
+        });
     },
     fetchProfile(state,personObj) {
       state.profileObj = {

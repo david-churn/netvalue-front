@@ -18,7 +18,8 @@
 
 <script>
 // third party
-import firebase from "firebase";
+import firebase from "firebase/app";
+require("firebase/auth");
 import _ from "lodash";
 // project library
 import emi from "../components/emi.vue";
