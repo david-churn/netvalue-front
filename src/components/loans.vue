@@ -2,45 +2,45 @@
   <div class="loans">
     <h3 class="center">{{ title }}</h3>
     <div class="row">
-      <div class="col-amount">Balance</div>
-      <div class="flex2">Monthly Payment</div>
-    </div>
-    <div class="row">
-      <div class="col-amount">{{ subtotalAmt }}</div>
-      <div class="col-amount">{{ subtotalPayment }}</div>
+      <div class="flex2 right">
+        <div>Balance</div>
+        <div>{{ subtotalAmt }}</div>
+      </div>
+      <div class="flex2 right">
+        <div>Monthly Payment</div>
+        <div>{{ subtotalPayment }}</div>
+      </div>
     </div>
     <hr>
     <div v-for="(debt,index) in loansDebts" :key="index">
       <div class="row">
-        <div class="flex2 label">Description:</div>
-        <div class="flex2 right">
-          <input type="text"
-            :value="debt.description"
-            @change="updateRow($event,debt,'description')">
+        <div class="flex2 label">
+          <div>Description:</div>
+          <div>Balance:</div>
+          <div>Monthly Payment:</div>
+          <div>Annual Interest:</div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-amount">Balance:</div>
-        <div class="col-amount">
-          <input type="number" step=".01" class="right"
-            :value="debt.amount"
-            @change="updateRow($event,debt,'amount')">
-        </div>
-      </div>
-      <div class="row">
-        <div class="flex2 right">Monthly Payment:</div>
-        <div class="col-amount">
-          <input type="number" step=".01" class="right"
-            v-model="debt.payment"
-            @change="updateRow($event,debt,'payment')">
-        </div>
-      </div>
-      <div class="row">
-        <div class="flex2 right">Annual Interest:</div>
-        <div class="col-amount">
-          <input type="number" step=".0001" class="right"
-            :value="debt.apr"
-            @change="updateRow($event,debt,'apr')">%
+        <div class="flex2">
+          <div>
+            <input type="text"
+              :value="debt.description"
+              @change="updateRow($event,debt,'description')">
+          </div>
+          <div>
+            <input type="number" step=".01" class="right"
+              :value="debt.amount"
+              @change="updateRow($event,debt,'amount')">
+          </div>
+          <div>
+            <input type="number" step=".01" class="right"
+              v-model="debt.payment"
+              @change="updateRow($event,debt,'payment')">
+          </div>
+          <div>
+            <input type="number" step=".01" class="right"
+              :value="debt.apr"
+              @change="updateRow($event,debt,'apr')">%
+          </div>
         </div>
       </div>
       <button type="button" @click="deleteRow(debt.id)">remove</button>
@@ -118,5 +118,4 @@ export default {
 input {
   max-width: 90%;
 }
-
 </style>

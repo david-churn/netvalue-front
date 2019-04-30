@@ -20,21 +20,16 @@ export default new Vuex.Store({
     profileStr: "profile/",
     stockStr: "stock/",
 
-//  personID, createdAt, decimalStr, emailStr, gID, lastLogInTsp, nickNm, separatorStr, updatedAt
-    profileObj: {},
+//  personID, createdAt, decimalStr, emailStr, gID, nickNm, separatorStr, updatedAt
+    profileObj: {
+      decimalStr: '.',
+      separatorStr: ',',
+      updatedAt: moment().format("MMMM Do YYYY, h:mm:ss a"),
+      nickNm: "what I call you",
+      email: "here@now.com"
+    },
 //  id, type, symbol, description, apr, payment, shares, price, amount
-    assets: [
-      { id: 0,
-        type: "other",
-        symbol: null,
-        description: "Cash",
-        apr: null,
-        payment: null,
-        shares: null,
-        price: null,
-        amount: 0
-      }
-    ],
+    assets: [],
 //  id, type, description, apr, payment, amount
     debts: []
   },
@@ -65,14 +60,16 @@ export default new Vuex.Store({
       context.commit("deleteAsset", id);
     },
     insertAsset(context,assetObj) {
-      let fetchStr = this.state.localUrlStr + this.state.netValueStr
-        + "gid/" + this.state.uid
+      let postStr = this.state.localUrlStr + this.state.netValueStr
+        + "asset/" + this.state.profileObj.personID
         + "/" + encodeURIComponent(assetObj.type);
-      axios.get(fetchStr)
+        console.log(`postStr=`,postStr);
+      axios.post(postStr)
         .then ((resp) => {
+          console.log(`resp=`,resp);
           if (!resp.data.errors) {
             console.log(resp.data);
-            assetObj.id = resp.data.dataValues.assetID;
+            assetObj.id = resp.data.assetID;
             context.commit("insertAsset", assetObj);
           }
           else {
@@ -91,14 +88,14 @@ export default new Vuex.Store({
       context.commit("deleteDebt", id);
     },
     insertDebt(context,debtObj) {
-      let fetchStr = this.state.localUrlStr + this.state.netValueStr
-        + "gid/" + this.state.uid
-        + "/" + encodeURIComponent(debtObj.type);
-      axios.get(fetchStr)
+      let postStr = this.state.localUrlStr + this.state.netValueStr
+        + "debt/" + this.state.profileObj.personID        + "/" + encodeURIComponent(debtObj.type);
+        console.log(`postStr=`,postStr);
+      axios.post(postStr)
         .then ((resp) => {
+          console.log(`resp=`,resp);
           if (!resp.data.errors) {
-            console.log(resp.data);
-            debtObj.id = resp.data.dataValues.debtID;
+            debtObj.id = resp.data.debtID;
             context.commit("insertDebt", debtObj);
           }
           else {
@@ -170,11 +167,11 @@ export default new Vuex.Store({
           context.commit("readNetValue",resp.data);
         })
         .catch ((error) => {
-          console.log(`post error=`,error);
+          console.log(`get error=`,error);
           throw (error);
         })
     },
-    saveNetValue(context) {
+    saveNetValue() {
       let requestStr = this.state.localUrlStr + this.state.netValueStr + "write/" + this.state.profileObj.personID;
       let requestObj = {
         assets: this.state.assets,
@@ -182,12 +179,8 @@ export default new Vuex.Store({
       };
       console.log(`saveNetValue ${requestStr}`,requestObj);
       axios.post(requestStr, requestObj)
-        .then ((resp) => {
-          console.log(resp.data);
-          context.commit("saveNetValue",resp.data);
-        })
+        .then ()
         .catch ((error) => {
-          console.log(`post error=`,error);
           throw (error);
         })
     }
@@ -242,7 +235,6 @@ export default new Vuex.Store({
     fetchProfile(state,personObj) {
       state.profileObj = {
         personID: personObj.personID,
-        lastLogInTsp: moment(personObj.lastLogInTsp).format("MMMM Do YYYY, h:mm:ss a"),
         updatedAt: moment(personObj.updatedAt).format("MMMM Do YYYY, h:mm:ss a"),
         nickNm: personObj.nickNm,
         emailStr: personObj.emailStr,
@@ -293,11 +285,6 @@ export default new Vuex.Store({
     },
 // read the asset information from the database.
     readNetValue(state,netValueObj) {
-      state.assets = netValueObj.assets;
-      state.debts = netValueObj.debts;
-    },
-// save the asset information to the database.
-    saveNetValue(state,netValueObj) {
       state.assets = netValueObj.assets;
       state.debts = netValueObj.debts;
     }

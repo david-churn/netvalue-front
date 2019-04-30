@@ -1,32 +1,28 @@
 <template>
   <div class="stocks">
     <h2>{{ title }}</h2>
+    <p>Look up information about a stock based upon its symbol.</p>
     <div class="row">
-      <div class="flex2 right">Symbol: </div>
-      <div class="flex10">
+      <div class="flex2 right">
+        <div>Symbol:</div>
+        <div>Price:</div>
+        <div>at {{ stockObj.latestSource}}:</div>
+        <div>Company Name:</div>
+        <div>Web Site:</div>
+        <div>Exchange:</div>
+        <div>Sector: </div>
+      </div>
+      <div class="flex2">
         <input type="text"
-          v-model="stockObj.symbol"
-          @change="queryAPI">
+            v-model="stockObj.symbol"
+            @change="queryAPI">
+        <div>{{ stockObj.latestPrice }}</div>
+        <div>{{ stockObj.latestTime }}</div>
+        <div>{{ stockObj.companyName }}</div>
+        <div>{{ stockObj.website}}</div>
+        <div>{{ stockObj.exchange }}</div>
+        <div>{{ stockObj.sector}}</div>
       </div>
-    </div>
-    <div class="row">
-      <div class="flex2 right">Price: </div>
-      <div class="flex10">{{ stockObj.latestPrice }}
-        <span v-if="stockObj.latestSource"> at {{ stockObj.latestSource}}</span>
-        <span v-if="stockObj.latestTime"> on {{ stockObj.latestTime }}</span>
-      </div>
-    </div>
-    <div class="row">
-      <div class="flex2 right">Company Name: </div>
-      <div class="flex4">{{ stockObj.companyName }}</div>
-      <div class="flex2 right">Exchange: </div>
-      <div class="flex4">{{ stockObj.exchange }}</div>
-    </div>
-    <div class="row">
-      <div class="flex2 right">Web Site: </div>
-      <div class="flex4">{{ stockObj.website}}</div>
-      <div class="flex2 right">Sector: </div>
-      <div class="flex4">{{ stockObj.sector}}</div>
     </div>
     <p class="small">Data provided for free by <a href="https://iextrading.com/developer">IEX</a>. View <a href="https://iextrading.com/api-exhibit-a/">IEX&rsquo;s Terms of Use</a>.
     </p>
@@ -106,6 +102,12 @@ export default {
 </script>
 
 <style lang="css" scoped>
+input {
+  max-width: 90%;
+}
+p {
+  margin: 5%;
+}
 .right {
   text-align: right;
 }

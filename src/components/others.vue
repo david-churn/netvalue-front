@@ -1,29 +1,33 @@
 <template>
   <div class="others">
     <h3 class="center">{{ title }}</h3>
-    <div class="half">Balance</div>
-    <div class="half">{{ subtotalAmt }}</div>
+    <div class="half">
+      <div class="right">Balance</div>
+      <div class="right">{{ subtotalAmt }}</div>
+    </div>
     <hr>
     <div v-for="(asset,index) in otherAssets" :key="index">
       <div class="row">
-        <div class="flex2 label">Description:</div>
+        <div class="flex2 label">
+          <div>Description:</div>
+          <div>Balance:</div>
+        </div>
         <div class="flex2">
-          <input type="text"
-            v-show="asset.description!='Cash'"
-            :value="asset.description"
-            @change="updateRow($event,asset,'description')">
+          <div>
+            <input type="text"
+              v-show="asset.description!='Cash'"
+              :value="asset.description"
+              @change="updateRow($event,asset,'description')">
             <div class="flex2"
               v-show="asset.description=='Cash'">
               {{ asset.description }}
             </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="flex2 label">Balance:</div>
-        <div class="col-amount">
-          <input  type="number" step=".01" class="amt"
-            :value="asset.amount"
-            @change="updateRow($event,asset,'amount')">
+          </div>
+          <div>
+            <input  type="number" step=".01" class="right"
+              :value="asset.amount"
+              @change="updateRow($event,asset,'amount')">
+          </div>
         </div>
       </div>
       <button type="button"
@@ -83,6 +87,12 @@ export default {
       this.$store.dispatch("deleteAsset",aID);
     },
     updateRow(e,asset,propStr) {
+// "Cash" is the special account in other where future value calculations will dump money.  Do not allow another one to be created.  Cash cannot be deleted.
+      if ( propStr==="description" &&  e.srcElement.value==="Cash")
+        {
+          e.srcElement.value="cash";
+        }
+      console.log(`event=`,e);
       let updAsset = {
         id: asset.id,
         type: asset.type,
@@ -90,7 +100,6 @@ export default {
         description: asset.description
       };
       updAsset[propStr] = e.srcElement.value;
-      console.log(updAsset);
       this.$store.dispatch("updateAsset",updAsset);
     }
   }
@@ -102,7 +111,7 @@ input {
   max-width: 90%;
 }
 half {
-  width: 45%;
+  max-width: 45%;
   text-align: right;
 }
 </style>

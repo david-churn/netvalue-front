@@ -2,58 +2,53 @@
   <div class="stocks">
     <h3 class="center">{{ title }}</h3>
     <div class="row">
-      <div class="flex2 right">Balance</div>
-      <div class="flex2 right">Annual Dividends</div>
-    </div>
-    <div class="row">
-      <div class="col-amount">{{ subtotalAmt }}</div>
-      <div class="col-amount">{{ subtotalDividend }}</div>
+      <div class="flex2 right">
+        <div>Balance</div>
+        <div>{{ subtotalAmt }}</div>
+      </div>
+      <div class="flex2 right">
+        <div>Annual Dividends</div>
+        <div>{{ subtotalDividend }}</div>
+      </div>
     </div>
     <hr>
     <div v-for="(asset,index) in stocksAssets" :key="index">
       <div class="row">
-        <div class="flex2 label">Description:</div>
+        <div class="flex2 label">
+          <div>Description:</div>
+          <div>Balance:</div>
+          <div>Shares:</div>
+          <div>Symbol:</div>
+          <div>Price:</div>
+          <div> at {{ asset.latestSource}}:</div>
+          <div>Company Name:</div>
+          <div>Annual Dividends:</div>
+        </div>
         <div class="flex2">
-          <input type="text"
-             :value="asset.description"
-             @change="updateRow($event,asset,'description')">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-amount">Balance</div>
-        <div class="col-amount">{{ asset.amount }}</div>
-      </div>
-      <div class="row">
-        <div class="col-amount">Shares:</div>
-        <div class="col-amount">
-          <input type="number" step=".000001" class="right"
-            :value="asset.shares"
-            @change="updateRow($event,asset,'shares')">
-        </div>
-      </div>
-      <div class="row">
-        <div class="flex2 label">Symbol:</div>
-        <div class="flex2 right">
-          <input type="text"
-            :value="asset.symbol"
-            @change="updateRow($event,asset,'symbol')">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-amount">Price:</div>
-        <div class="col-amount">{{ asset.price }}</div>
-      </div>
-      <div class="right">{{ asset.latestSource}} at {{ asset.latestTime}}</div>
-      <div class="row">
-        <div class="flex2 label">Company Name:</div>
-        <div class="flex2">{{ asset.company }}</div>
-      </div>
-      <div class="row">
-        <div class="col-amount">Annual Dividends</div>
-        <div class="col-amount">
-          <input type="number" step=".01" class="right"
-            :value="asset.payment"
-            @change="updateRow($event,asset,'payment')">
+          <div>
+            <input type="text"
+               :value="asset.description"
+               @change="updateRow($event,asset,'description')">
+          </div>
+          <div>{{ Number(asset.amount)        .toDecFormat(2,3,sepPt,decPt) }}</div>
+          <div>
+            <input type="number" step=".000001" class="right"
+              :value="asset.shares"
+              @change="updateRow($event,asset,'shares')">
+          </div>
+          <div>
+            <input type="text"
+              :value="asset.symbol"
+              @change="updateRow($event,asset,'symbol')">
+          </div>
+          <div>{{ Number(asset.price).toDecFormat(2,3,sepPt,decPt) }}</div>
+          <div>{{ asset.latestTime}}</div>
+          <div>{{ asset.company }}</div>
+          <div>
+            <input type="number" step=".01" class="right"
+              :value="asset.payment"
+              @change="updateRow($event,asset,'payment')">
+          </div>
         </div>
       </div>
       <button type="button" @click="deleteRow(asset.id)">remove</button>
@@ -183,5 +178,8 @@ export default {
 input {
   max-width: 90%;
 }
-
+.r90 {
+  max-width: 80%;
+  text-align: right;
+}
 </style>

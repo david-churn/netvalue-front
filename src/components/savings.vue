@@ -2,45 +2,45 @@
   <div class="savings">
     <h3 class="center">{{ title }}</h3>
     <div class="row">
-      <div class="flex2 right">Balance</div>
-      <div class="flex2 right">Monthly Contribution</div>
-    </div>
-    <div class="row">
-      <div class="col-amount">{{ subtotalAmt }}</div>
-      <div class="col-amount">{{ subtotalContrib }}</div>
+      <div class="flex2 right">
+        <div>Balance</div>
+        <div>{{ subtotalAmt }}</div>
+      </div>
+      <div class="flex2 right">
+        <div>Monthly Contribution</div>
+        <div>{{ subtotalContrib }}</div>
+      </div>
     </div>
     <hr>
     <div v-for="(asset,index) in savingsAssets" :key="index">
       <div class="row">
-        <div class="flex2 label">Description:</div>
-        <div class="flex2 right">
-          <input type="text"
-            :value="asset.description"
-            @change="updateRow($event, asset, 'description')">
+        <div class="flex2 label">
+          <div>Description:</div>
+          <div>Balance:</div>
+          <div>Monthly Contribution:</div>
+          <div>Annual Interest:</div>
         </div>
-      </div>
-      <div class="row">
-        <div class="flex2 label">Balance:</div>
-        <div class="col-amount">
-          <input type="number" step=".01" min="0" class="right"
-            :value="asset.amount"
-            @change="updateRow($event, asset,'amount')">
-        </div>
-      </div>
-      <div class="row">
-        <div class="flex2 label">Monthly Contribution:</div>
-        <div class="col-amount">
-          <input type="number" step=".01" min="0" class="right"
-            :value="asset.payment"
-            @change="updateRow($event, asset, 'payment')">
-        </div>
-      </div>
-      <div class="row">
-        <div class="flex2 label">Annual Interest:</div>
-        <div class="col-amount">
-          <input type="number" step=".0001" min="0" class="right"
-            :value="asset.apr"
-            @change="updateRow($event, asset, 'apr')">%
+        <div class="flex2">
+          <div>
+            <input type="text"
+              :value="asset.description"
+              @change="updateRow($event, asset, 'description')">
+          </div>
+          <div>
+            <input type="number" step=".01" min="0" class="right"
+              :value="asset.amount"
+              @change="updateRow($event, asset,'amount')">
+          </div>
+          <div>
+            <input type="number" step=".01" min="0" class="right"
+              :value="asset.payment"
+              @change="updateRow($event, asset, 'payment')">
+          </div>
+          <div>
+            <input type="number" step=".0001" min="0" class="right"
+              :value="asset.apr"
+              @change="updateRow($event, asset, 'apr')">%
+          </div>
         </div>
       </div>
       <button type="button" @click="deleteRow(asset.id)">remove</button>
@@ -60,7 +60,7 @@ export default {
 //  tempId is a unique number for each asset component.  Prevents duplicate tempId
 //  between the components.  All components must subtract tempId by 1000 in addRow method.
       tempId: -1,
-      title: 'Savings and Checking',
+      title: 'Checking and Savings',
       type: 'saving'
     }
   },
