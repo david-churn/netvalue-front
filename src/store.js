@@ -21,13 +21,7 @@ export default new Vuex.Store({
     stockStr: "stock/",
 
 //  personID, createdAt, decimalStr, emailStr, gID, nickNm, separatorStr, updatedAt
-    profileObj: {
-      decimalStr: '.',
-      separatorStr: ',',
-      updatedAt: moment().format("MMMM Do YYYY, h:mm:ss a"),
-      nickNm: "what I call you",
-      email: "here@now.com"
-    },
+    profileObj: {},
 //  id, type, symbol, description, apr, payment, shares, price, amount
     assets: [],
 //  id, type, description, apr, payment, amount
@@ -133,6 +127,7 @@ export default new Vuex.Store({
     },
     fetchProfile(context,userObj) {
       let fetchStr = this.state.localUrlStr + this.state.profileStr + "gid/" + userObj.uid;
+      console.log(fetchStr);
       axios.get(fetchStr)
         .then ((resp) => {
           if (!resp.data.errors) {

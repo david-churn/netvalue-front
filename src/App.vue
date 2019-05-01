@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <navCmp/>
-    <h1>{{ title }} for {{ this.$store.state.profileObj.nickNm}}</h1>
-    <router-view/>
-    <hr>
+    <div class="body-view">
+      <h1>{{ title }} for {{ this.$store.state.profileObj.nickNm || "you"}}</h1>
+      <router-view/>
+    </div>
     <footer class="center">&copy; 2019</footer>
   </div>
 </template>
@@ -32,6 +33,9 @@ $blackish: #191516;
 $redish: #dd2d4a;
 $greenish: #c5efcb;
 
+* {
+  box-sizing: border-box;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -41,7 +45,14 @@ $greenish: #c5efcb;
 h1 {
   text-align: center;
 }
-body {
+footer {
+  border-top: solid 1px $blackish;
+  background: #c5efcb;
+}
+.border {
+  border: solid 1px $blackish;
+}
+.body-view {
   margin: 1% 5%;
 }
 .toasted-container .toasted.bubble {
@@ -106,11 +117,6 @@ body {
 }
 .flex12 {
   flex: 12;
-}
-* {
-  box-sizing: border-box;
-  background: green;
-  color: $whitish;
 }
 // responsive changes
 //  tablet sized

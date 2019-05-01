@@ -143,7 +143,6 @@ export default {
 .card {
   background: $whitish;
   border: solid 1px black;
-  margin: 1%;
   padding: 1%;
 }
 </style>

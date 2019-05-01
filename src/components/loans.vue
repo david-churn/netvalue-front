@@ -65,17 +65,23 @@ export default {
     }
   },
   computed: {
+    decPt: function() {
+      return this.$store.state.profileObj.decimalStr;
+    },
+    sepPt: function() {
+      return this.$store.state.profileObj.separatorStr;
+    },
     subtotalAmt: function () {
       return this.loansDebts
         .map(debt => Number.isFinite(Number(debt.amount)) ? Number(debt.amount) : 0)
         .reduce((total, amount) => total + amount, 0)
-        .toDecFormat(2);
+        .toDecFormat(2,3,this.sepPt,this.decPt);
     },
     subtotalPayment: function() {
       return this.loansDebts
         .map(debt => Number.isFinite(Number(debt.payment)) ? Number(debt.payment) : 0)
         .reduce((total, payment) => total + payment, 0)
-        .toDecFormat(2);
+        .toDecFormat(2,3,this.sepPt,this.decPt);
     },
     loansDebts: function () {
       return this.typeDebts(this.type);

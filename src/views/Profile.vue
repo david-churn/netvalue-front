@@ -1,42 +1,35 @@
 <template>
   <div class="profile">
     <h1>{{ title }}</h1>
+    <button type="button" @click="chgProf">Save Profile</button>
     <div class="row">
-      <div class="flex2">Name: {{ gNameStr }} </div>
-      <div class="flex2 right">
-        <button class="redbtn" type="button" @click="removeAll">Forget Me</button>
+      <div class="flex2 label">
+        <div>Name:</div>
+        <div>Number Example:</div>
+        <div>Last Profile Change:</div>
       </div>
-    </div>
-    <div class="">Number example = {{ exampleNbr }}</div>
-    <div class="">
-      <div class="">Last profile change: {{ profileObj.updatedAt }}</div>
+      <div class="flex2">
+        <div>{{ gNameStr }}</div>
+        <div>{{ exampleNbr }}</div>
+        <div>{{ profileObj.updatedAt }}</div>
+      </div>
     </div>
     <hr>
     <div class="row">
-      <div class="flex2 right">Called By:</div>
+      <div class="flex2 label">
+        <div class="in-text">Called By:</div>
+        <div class="in-text">Email Address:</div>
+        <div class="in-text">Decimal character:</div>
+        <div class="in-text">Separator character:</div>
+      </div>
       <div class="flex2">
         <input type="text" required v-model="nickNm">
+        <input type="text" required v-model="emailStr">
+        <input type="text" maxLength=1 required v-model="decimalStr">
+        <input type="text" maxLength=1 required v-model="separatorStr">
       </div>
     </div>
-    <div class="row">
-      <div class="flex2 right">Email Address:</div>
-      <div class="flex2">
-      <input type="text" required v-model="emailStr">
-      </div>
-    </div>
-    <div class="row">
-      <div class="flex2 right">Decimal character:</div>
-      <div class="flex2">
-        <input type="text" v-model="decimalStr">
-      </div>
-    </div>
-    <div class="row">
-      <div class="flex2 right">Separator character:</div>
-      <div class="flex2">
-        <input type="text" v-model="separatorStr">
-      </div>
-    </div>
-    <button type="button" @click="chgProf">Change It</button>
+    <button class="redbtn" type="button" @click="removeAll">Delete All</button>
   </div>
 </template>
 
@@ -91,12 +84,12 @@ export default {
     this.emailStr = this.profileObj.emailStr;
     this.decimalStr = this.profileObj.decimalStr;
     this.separatorStr = this.profileObj.separatorStr;
-    this.exampleNbr = Number( 123456789.1234 ).toDecFormat(4,3,this.separatorStr,this.decimalStr);
+    this.exampleNbr = Number( 123456789.12 ).toDecFormat(2,3,this.separatorStr,this.decimalStr);
   },
   computed: mapState (["profileObj"]),
   methods: {
     chgProf () {
-      this.exampleNbr = Number( 123456789.1234 ).toDecFormat(4,3,this.separatorStr,this.decimalStr);
+      this.exampleNbr = Number( 123456789.12 ).toDecFormat(2,3,this.separatorStr,this.decimalStr);
       let updateObj = {
         nickNm: this.nickNm,
         emailStr: this.emailStr,
@@ -107,10 +100,9 @@ export default {
       Vue.toasted.show('Updating', this.successToast);
     },
     removeAll () {
-      if (confirm('Forget all your information,' + this.nickNm + '?')) {
-        this.$store.displatch("removeAll",this.profileObj.personID)
+      if (confirm('Delete all assets, debts, and your profile, ' + this.nickNm + '?')) {
+        this.$store.dispatch("deleteProfile",this.profileObj.personID)
       }
-      console.log(`${this.profileObj.personID} forgotten`);
     }
   }
 }
@@ -118,12 +110,18 @@ export default {
 </script>
 
 <style scoped>
-input {
-  margin: 0.5em;
+div, input {
+  margin: 0.2em;
+  min-height: 1.5em;
+}
+.in-text {
+  margin-bottom: 0.25em;
+  margin-top: 0.4em;
 }
 .redbtn {
   background: red;
-  font-weight: bold;
   border: double 1px black;
+  font-weight: bold;
+  padding: 0.5em;
 }
 </style>

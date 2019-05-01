@@ -4,13 +4,13 @@
     <div class="flex1 box">
       <router-link to="/">Home</router-link>
     </div>
-    <div class="flex1 box">
+    <div class="flex1 box" v-show="authorized">
       <router-link to="/netvalue">Net Value</router-link>
     </div>
-    <div class="flex1 box">
+    <div class="flex1 box" v-show="authorized">
       <router-link to="/tools">Tools</router-link>
     </div>
-    <div class="flex1 box">
+    <div class="flex1 box" v-show="authorized">
       <router-link to="/profile">Profile</router-link>
     </div>
     <div class="flex1 box">
@@ -61,8 +61,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-* {
-}
 button {
   background: #c5efcb;
   color: #2c3e50;
