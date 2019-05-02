@@ -1,10 +1,11 @@
 <template>
   <div class="stocks">
-    <h2>{{ title }}</h2>
+    <h3>{{ title }}</h3>
     <p>Look up information about a stock based upon its symbol.</p>
+    <hr>
     <div class="row">
       <div class="flex2 right">
-        <div>Symbol:</div>
+        <div class="in-text">Symbol:</div>
         <div>Price:</div>
         <div>at {{ stockObj.latestSource}}:</div>
         <div>Company Name:</div>
@@ -13,9 +14,11 @@
         <div>Sector: </div>
       </div>
       <div class="flex2">
-        <input type="text"
-            v-model="stockObj.symbol"
-            @change="queryAPI">
+        <div>
+          <input type="text"
+              v-model="stockObj.symbol"
+              @change="queryAPI">
+        </div>
         <div>{{ stockObj.latestPrice }}</div>
         <div>{{ stockObj.latestTime }}</div>
         <div>{{ stockObj.companyName }}</div>
@@ -64,10 +67,8 @@ export default {
     queryAPI() {
       if (this.stockObj.symbol) {
         let requestStr = this.$store.state.localUrlStr + this.$store.state.stockStr + this.$store.state.companyStr + encodeURIComponent(this.stockObj.symbol);
-        console.log(`requestStr=${requestStr}`);
         axios.get(requestStr)
           .then ((resp) => {
-            console.log(resp.data);
             this.stockObj.latestPrice = resp.data.latestPrice.toDecFormat(2,3,this.sepPt,this.decPt);
             this.stockObj.latestSource = resp.data.latestSource;
             this.stockObj.latestTime =
@@ -79,7 +80,6 @@ export default {
             this.stockObj.sector = resp.data.sector;
           })
           .catch ((error) => {
-            console.log(`post error=`,error);
             throw (error)
           });
       }
@@ -102,16 +102,4 @@ export default {
 </script>
 
 <style lang="css" scoped>
-input {
-  max-width: 90%;
-}
-p {
-  margin: 5%;
-}
-.right {
-  text-align: right;
-}
-.small {
-  font-size: 0.6em;
-}
 </style>

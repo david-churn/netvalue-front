@@ -1,30 +1,39 @@
 <template>
   <div class="periodpayment">
-    <h2>{{ title }}</h2>
+    <h3>{{ title }}</h3>
     <p>Calculate the total money and interest earned resulting from monthly deposits to a starting balance at a fixed interest rate.  Assumes monthly interest compounding.</p>
+    <hr>
     <div class="row">
       <div class="flex2 right">
-        <div>Starting Balance:</div>
-        <div>Monthly Payment:</div>
-        <div>Annual Interest Rate:</div>
-        <div>Months:</div>
-        <div>&gt;&gt;&gt;</div>
+        <div class="in-text">Starting Balance:</div>
+        <div class="in-text">Monthly Payment:</div>
+        <div class="in-text">Annual Interest Rate:</div>
+        <div class="in-text">Months:</div>
+        <div class="in-text">&gt;&gt;&gt;</div>
         <div>Ending Balance:</div>
         <div>Earnings:</div>
       </div>
       <div class="flex2">
-        <input type="number" step=".01" class="amt"
-            v-model="principleAmt">
-        <input type="number" step=".01" class="amt"
-          v-model="paymentAmt">
-        <input type="number" step=".01" class="amt" v-model="APR">%
-        <input type="number" class="amt"
-          v-model="periodQty">
-        <button type="button"
-          @click="calculateIt">calculate
-        </button>
+        <div>
+          <input type="number" step=".01" class="right" v-model="principleAmt">
+        </div>
+        <div>
+          <input type="number" step=".01" class="right" v-model="paymentAmt">
+        </div>
+        <div>
+          <input type="number" step=".01" class="right" v-model="APR">%
+        </div>
+        <div>
+          <input type="number" class="right"
+            v-model="periodQty">
+        </div>
+        <div>
+          <button type="button"
+            @click="calculateIt">calculate
+          </button>
+        </div>
         <div>{{ balanceAmt.toDecFormat(2,3,this.sepPt,this.decPt)}}</div>
-        <div class="flex10">{{ earningAmt.toDecFormat(2,3,this.sepPt,this.decPt)}}</div>
+        <div>{{ earningAmt.toDecFormat(2,3,this.sepPt,this.decPt)}}</div>
       </div>
     </div>
     <p class="small">Results are estimates for planning.  Assumes monthly compound interest for monthly payments.</p>
@@ -73,13 +82,4 @@ export default {
 </script>
 
 <style lang="css" scoped>
-input {
-  max-width: 90%;
-}
-p {
-  margin: 5%;
-}
-.small {
-  font-size: 0.6em;
-}
 </style>

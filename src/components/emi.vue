@@ -1,22 +1,31 @@
 <template>
   <div class="emi">
-    <h2>{{ title }}</h2>
+    <h3>{{ title }}</h3>
     <p>Calculate a payment amount for an equal number of payments to pay of a loan over a period of months.  The result includes the total amount paid and interest cost.  Assumes monthly interest compounding.</p>
+    <hr>
     <div class="row">
       <div class="flex2 right">
-        <div>Starting Balance:</div>
-        <div>Annual Interest Rate:</div>
-        <div>Months:</div>
-        <div>&gt;&gt;&gt;</div>
+        <div class="in-text">Starting Balance:</div>
+        <div class="in-text">Annual Interest Rate:</div>
+        <div class="in-text">Months:</div>
+        <div class="in-text">&gt;&gt;&gt;</div>
         <div>Monthly Payment:</div>
         <div>Total Paid:</div>
         <div>Interest Paid:</div>
       </div>
       <div class="flex2">
-        <input type="number" step=".01" class="amt" v-model="principleAmt">
-        <input type="number" step=".01" class="amt" v-model="APR">%
-        <input type="number" class="amt" v-model="periodQty">
-        <button type="button"         @click="calculateIt">calculate</button>
+        <div>
+          <input type="number" step=".01" class="right" v-model="principleAmt">
+        </div>
+        <div>
+          <input type="number" step=".01" class="right" v-model="APR">%
+        </div>
+        <div>
+          <input type="number" class="right" v-model="periodQty">
+        </div>
+        <div>
+          <button type="button"         @click="calculateIt">calculate</button>
+        </div>
         <div>{{ paymentAmt.toDecFormat(2,3,sepPt,decPt)}}</div>
         <div>{{ totalAmt.toDecFormat(2,3,sepPt,decPt)}}</div>
         <div>{{ costAmt.toDecFormat(2,3,sepPt,decPt)}}</div>
@@ -62,13 +71,4 @@ export default {
 </script>
 
 <style lang="css" scoped>
-input {
-  max-width: 90%;
-}
-p {
-  margin: 5%;
-}
-.small {
-  font-size: 0.6em;
-}
 </style>

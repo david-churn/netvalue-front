@@ -1,6 +1,6 @@
 <template>
   <div class="tools">
-    <h1>{{ title }}</h1>
+    <h2>{{ title }}</h2>
     <div class="card">
       <stockQuery/>
     </div>
@@ -57,10 +57,4 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  background: $whitish;
-  border: solid 1px black;
-  margin: 1%;
-  padding: 1%;
-}
 </style>

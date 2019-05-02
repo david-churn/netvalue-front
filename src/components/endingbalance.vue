@@ -1,26 +1,37 @@
 <template>
   <div class="endingbalance">
-    <h2>{{ title }}</h2>
+    <h3>{{ title }}</h3>
     <p>Calculate how long it will take to achieve a desired balance and interest earned from monthly deposits to a starting balance at a fixed interest rate.  Assumes monthly interest compounding.</p>
     <p>To model a loan, use a negative starting balance with a desired balance of zero.</p>
     <p>The calculation has a limit of 100 years.</p>
+    <hr>
     <div class="row">
       <div class="flex2 right">
-        <div>Starting Balance:</div>
-        <div>Monthly Payment:</div>
-        <div>Annual Interest Rate:</div>
-        <div>Desired Balance:</div>
-        <div>&gt;&gt;&gt;</div>
+        <div class="in-text">Starting Balance:</div>
+        <div class="in-text">Monthly Payment:</div>
+        <div class="in-text">Annual Interest Rate:</div>
+        <div class="in-text">Desired Balance:</div>
+        <div class="in-text">&gt;&gt;&gt;</div>
         <div>Ending Balance:</div>
         <div>Earnings:</div>
         <div>Months:</div>
       </div>
       <div class="flex2">
-        <input type="number" step=".01" class="amt" v-model="principleAmt">
-        <input type="number" step=".01" class="amt" v-model="paymentAmt">
-        <input type="number" step=".01" class="amt" v-model="APR">%
-        <input type="number" step=".01" class="amt" v-model="resultAmt">
-        <button type="button"           @click="calculateIt">calculate</button>
+        <div>
+          <input type="number" step=".01" class="right" v-model="principleAmt">
+        </div>
+        <div>
+          <input type="number" step=".01" class="right" v-model="paymentAmt">
+        </div>
+        <div>
+          <input type="number" step=".01" class="right" v-model="APR">%
+        </div>
+        <div>
+          <input type="number" step=".01" class="right" v-model="resultAmt">
+        </div>
+        <div>
+          <button type="button"           @click="calculateIt">calculate</button>          
+        </div>
         <div>{{ balanceAmt.toDecFormat(2,3,sepPt,decPt)}}</div>
         <div>{{ earningAmt.toDecFormat(2,3,sepPt,decPt)}}</div>
         <div>{{ periodQty.toDecFormat(0,3,sepPt) }}</div>
@@ -42,7 +53,7 @@ export default {
       periodQty: 0,
       principleAmt: 0,
       resultAmt: 0,
-      title: "Desired Balance",
+      title: "Ending Balance",
     }
   },
   computed: {
@@ -76,13 +87,4 @@ export default {
 </script>
 
 <style lang="css" scoped>
-input {
-  max-width: 90%;
-}
-p {
-  margin: 5%;
-}
-.small {
-  font-size: 0.6em;
-}
 </style>

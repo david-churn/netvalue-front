@@ -1,22 +1,22 @@
 <template>
   <div class="netvalue">
     <h2 class="row">
-      <div class="col-amount">{{ totalAmt }}</div>
-      <div class="flex10">{{ title }}</div>
+      <div class="flex2 right">{{ totalAmt }}</div>
+      <div class="flex2 left">{{ title }}</div>
     </h2>
     <div class="row">
-      <div class="flex11">
+      <div class="flex2">
         <button type="button"
           @click="saveNetValue">Save</button>
       </div>
-      <div class="flex1">
+      <div class="flex2 right">
         <button type="button"
           @click="resetNetValue">Reset</button>
       </div>
     </div>
     <h2 class="row">
-      <div class="col-amount">{{ subtotalAssetsAmt }}</div>
-      <div class="flex10">Assets</div>
+      <div class="flex2 right">{{ subtotalAssetsAmt }}</div>
+      <div class="flex2 left">Assets</div>
     </h2>
     <div class="card">
       <aSavings/>
@@ -28,8 +28,8 @@
       <aOthers/>
     </div>
     <h2 class="row">
-      <div class="col-amount">{{ subtotalDebtsAmt }}</div>
-      <div class="flex10">Debts</div>
+      <div class="flex2 right">{{ subtotalDebtsAmt }}</div>
+      <div class="flex2 left">Debts</div>
     </h2>
     <div class="card">
       <dLoans/>
@@ -140,9 +140,4 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  background: $whitish;
-  border: solid 1px black;
-  padding: 1%;
-}
 </style>

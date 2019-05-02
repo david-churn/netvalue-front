@@ -1,9 +1,9 @@
 <template>
   <div class="profile">
-    <h1>{{ title }}</h1>
+    <h2>{{ title }}</h2>
     <button type="button" @click="chgProf">Save Profile</button>
     <div class="row">
-      <div class="flex2 label">
+      <div class="flex2 right">
         <div>Name:</div>
         <div>Number Example:</div>
         <div>Last Profile Change:</div>
@@ -16,7 +16,7 @@
     </div>
     <hr>
     <div class="row">
-      <div class="flex2 label">
+      <div class="flex2 right">
         <div class="in-text">Called By:</div>
         <div class="in-text">Email Address:</div>
         <div class="in-text">Decimal character:</div>
@@ -76,7 +76,6 @@ export default {
     }
   },
   created () {
-    console.log(`created`);
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
         this.$store.dispatch("clearProfile");
@@ -86,7 +85,6 @@ export default {
         if (_.isEmpty(this.personProfile)) {
           this.$store.dispatch("fetchProfile",user)
           .then(() => {
-            console.log(`dispatch profileObj=`,this.profileObj);
             this.nickNm = this.profileObj.nickNm;
             this.emailStr = this.profileObj.emailStr;
             this.decimalStr = this.profileObj.decimalStr;
@@ -122,22 +120,11 @@ export default {
 </script>
 
 <style scoped>
-div {
-  margin: 0.2em;
-  min-height: 1.5em;
-}
-.in-text {
-  margin-bottom: 0.2em;
-  line-height: 1.5em;
-}
 .redbtn {
   background: #dd2d4a;
   border: double 1px black;
   color: #f0f0f0;
   font-weight: bold;
   padding: 0.5em;
-}
-.stay {
-  display: block;
 }
 </style>

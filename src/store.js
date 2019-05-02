@@ -57,22 +57,15 @@ export default new Vuex.Store({
       let postStr = this.state.localUrlStr + this.state.netValueStr
         + "asset/" + this.state.profileObj.personID
         + "/" + encodeURIComponent(assetObj.type);
-        console.log(`postStr=`,postStr);
       axios.post(postStr)
         .then ((resp) => {
-          console.log(`resp=`,resp);
           if (!resp.data.errors) {
-            console.log(resp.data);
             assetObj.id = resp.data.assetID;
             context.commit("insertAsset", assetObj);
           }
-          else {
-            console.log(resp.data.errors);
-          }
         })
         .catch ((error) => {
-          console.log(`post error=`,error);
-          throw (error)
+          throw error
         });
     },
     updateAsset(context,assetObj) {
@@ -84,21 +77,15 @@ export default new Vuex.Store({
     insertDebt(context,debtObj) {
       let postStr = this.state.localUrlStr + this.state.netValueStr
         + "debt/" + this.state.profileObj.personID        + "/" + encodeURIComponent(debtObj.type);
-        console.log(`postStr=`,postStr);
       axios.post(postStr)
         .then ((resp) => {
-          console.log(`resp=`,resp);
           if (!resp.data.errors) {
             debtObj.id = resp.data.debtID;
             context.commit("insertDebt", debtObj);
           }
-          else {
-            console.log(resp.data.errors);
-          }
         })
         .catch ((error) => {
-          console.log(`post error=`,error);
-          throw (error)
+          throw error
         });
     },
     updateDebt(context,debtObj) {
@@ -109,41 +96,29 @@ export default new Vuex.Store({
     },
     deleteProfile(context,personID) {
       let delStr = this.state.localUrlStr + this.state.profileStr + "deluser/" + personID;
-      console.log(`delStr=${delStr}`);
       axios.delete(delStr)
         .then ((resp) => {
           if (!resp.data.errors) {
-            console.log(resp.data);
             context.commit("deleteProfile");
-          }
-          else {
-            console.log(resp.data.errors);
           }
         })
         .catch ((error) => {
-          console.log(`delete error=`,error);
-          throw (error);
+          throw error
         })
     },
     fetchProfile(context,userObj) {
       return new Promise((resolve) => {
         let fetchStr = this.state.localUrlStr + this.state.profileStr + "gid/" + userObj.uid;
-        console.log(fetchStr);
         axios.get(fetchStr)
         .then ((resp) => {
           if (!resp.data.errors) {
-            console.log(resp.data);
             context.commit("fetchProfile",resp.data);
             resolve();
             this.dispatch("readNetValue");
           }
-          else {
-            console.log(resp.data.errors);
-          }
         })
         .catch ((error) => {
-          console.log(`post error=`,error);
-          throw (error)
+          throw error
         })
       })
     },
@@ -158,14 +133,11 @@ export default new Vuex.Store({
     },
     readNetValue(context) {
       let requestStr = this.state.localUrlStr + this.state.netValueStr + "read/" + this.state.profileObj.personID;
-      console.log(`readNetValue (${requestStr})`);
       axios.get(requestStr)
         .then ((resp) => {
-          console.log(resp.data);
           context.commit("readNetValue",resp.data);
         })
         .catch ((error) => {
-          console.log(`get error=`,error);
           throw (error);
         })
     },
@@ -175,7 +147,6 @@ export default new Vuex.Store({
         assets: this.state.assets,
         debts: this.state.debts
       };
-      console.log(`saveNetValue ${requestStr}`,requestObj);
       axios.post(requestStr, requestObj)
         .then ()
         .catch ((error) => {
@@ -194,11 +165,7 @@ export default new Vuex.Store({
     },
     updateAsset(state,updateObj) {
       let assetIdx = _.findIndex(state.assets, obj => obj.id === updateObj.id);
-      console.log(`index=${assetIdx}`,updateObj);
-//! remove the if for production
-      if (assetIdx >= 0) {
-        state.assets.splice(assetIdx,1,updateObj);
-      }
+      state.assets.splice(assetIdx,1,updateObj);
     },
     deleteDebt(state,delID) {
       let debtIdx = state.debts.map(debt => debt.id ).indexOf(delID);
@@ -209,11 +176,7 @@ export default new Vuex.Store({
     },
     updateDebt(state,updateObj) {
       let debtIdx = _.findIndex(state.debts, obj => obj.id === updateObj.id);
-      console.log(`index=${debtIdx}`,updateObj);
-//! remove the if for production
-      if (debtIdx >= 0) {
-        state.debts.splice(debtIdx,1,updateObj);
-      }
+      state.debts.splice(debtIdx,1,updateObj);
     },
     clearProfile(state) {
       state.profileObj = {};
@@ -223,11 +186,8 @@ export default new Vuex.Store({
       state.assets = [];
       state.debts = [];
       firebase.auth().signOut()
-        .then(function() {
-          console.log('Signed Out!');
-        })
         .catch(function(error) {
-          console.error('Sign Out Error', error);
+          throw error;
         });
     },
     fetchProfile(state,personObj) {
@@ -243,20 +203,9 @@ export default new Vuex.Store({
     insertProfile(state,personObj) {
 //! call the backend to set up new profile information and assign personID
       let updStr = state.localUrlStr + state.profileStr + "adduser/" + personObj.gID;
-      console.log(`updStr=${updStr}`,personObj);
       axios.post(updStr, personObj)
-        .then ((resp) => {
-          if (!resp.data.errors) {
-            console.log(resp.data);
-//! update the state.profile with the returned information
-          }
-          else {
-            console.log(resp.data.errors);
-          }
-        })
         .catch ((error) => {
-          console.log(`post error=`,error);
-          throw (error)
+          throw error
         })
     },
 // updates from the profile screen
@@ -266,19 +215,9 @@ export default new Vuex.Store({
       state.profileObj.decimalStr = personObj.decimalStr;
       state.profileObj.separatorStr = personObj.separatorStr;
       let updStr = state.localUrlStr + state.profileStr + "upduser/" + state.profileObj.personID;
-      console.log(`updStr=${updStr}`,state.profileObj);
       axios.patch(updStr, state.profileObj)
-        .then ((resp) => {
-          if (!resp.data.errors) {
-            console.log(resp.data);
-          }
-          else {
-            console.log(resp.data.errors);
-          }
-        })
         .catch ((error) => {
-          console.log(`post error=`,error);
-          throw (error)
+          throw error
         })
     },
 // read the asset information from the database.

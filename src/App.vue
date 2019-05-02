@@ -33,41 +33,49 @@ $blackish: #191516;
 $redish: #dd2d4a;
 $greenish: #c5efcb;
 
-* {
-  box-sizing: border-box;
-}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: $blackish;
 }
-h1 {
-  text-align: center;
+* {
+  box-sizing: border-box;
+}
+div {
+  margin: 0.2em;
+  min-height: 1.5em;
 }
 footer {
   border-top: solid 1px $blackish;
-  background: #c5efcb;
+  background: $greenish;
 }
-.border {
-  border: solid 1px $blackish;
+h1, h2, h3 {
+  text-align: center;
+}
+input {
+  max-width: 90%;
 }
 .body-view {
   margin: 1% 5%;
 }
-.toasted-container .toasted.bubble {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    font-size: 1.5em;
+.box {
+  border: solid 1px $blackish;
 }
-.amt {
-  text-align: right;
+.card {
+  background: $whitish;
+  border: solid 1px $blackish;
+  margin: 5% 0;
+  padding: 2%;
 }
-.center {
-  text-align: center;
+.flex1, .flex2 {
+  flex: 1;
 }
-.label {
-  text-align: right;
-  margin: 0 1% 0 0;
+.in-text {
+  line-height: 1.5em;
+}
+.left {
+  text-align: left;
 }
 .right {
   text-align: right;
@@ -76,62 +84,30 @@ footer {
   display: flex;
   margin: 1%;
 }
-.col-amount {
-  flex: 2;
-  min-width: 5em;
-  text-align: right;
-  margin: 0 1em;
+.short-in {
+  width: 2em;
 }
-.flex1 {
-  flex: 1;
+.small {
+  font-size: 0.6em;
 }
-.flex2 {
-  flex: 2;
-}
-.flex3 {
-  flex: 3;
-}
-.flex4 {
-  flex: 4;
-}
-.flex5 {
-  flex: 5;
-}
-.flex6 {
-  flex: 6;
-}
-.flex7 {
-  flex: 7;
-}
-.flex8 {
-  flex: 8;
-}
-.flex9 {
-  flex: 9;
-}
-.flex10 {
-  flex: 10;
-}
-.flex11 {
-  flex: 11;
-}
-.flex12 {
-  flex: 12;
+.toasted-container .toasted.bubble {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-size: 1.5em;
 }
 // responsive changes
 //  tablet sized
 @media (min-width: 768px) {
-  * {
-    background: lightgreen;
-    color: $blackish;
+  body {
+    background: lightgray;
+  }
+  h1, h2, h3 {
+    text-align: left;
   }
 }
 //  pc sized
 @media (min-width: 1280px) {
-  * {
-    background: $greenish;
-    color: $blackish;
+  body {
+    background: lightblue;
   }
 }
-
 </style>

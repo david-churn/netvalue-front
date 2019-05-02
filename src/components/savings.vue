@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="savings">
-    <h3 class="center">{{ title }}</h3>
+    <h3>{{ title }}</h3>
     <div class="row">
       <div class="flex2 right">
         <div>Balance</div>
@@ -14,11 +14,11 @@
     <hr>
     <div v-for="(asset,index) in savingsAssets" :key="index">
       <div class="row">
-        <div class="flex2 label">
-          <div>Description:</div>
-          <div>Balance:</div>
-          <div>Monthly Contribution:</div>
-          <div>Annual Interest:</div>
+        <div class="flex2 right">
+          <div class="in-text">Description:</div>
+          <div class="in-text">Balance:</div>
+          <div class="in-text">Monthly Contribution:</div>
+          <div class="in-text">Annual Interest:</div>
         </div>
         <div class="flex2">
           <div>
@@ -121,10 +121,4 @@ export default {
 </script>
 
 <style lang="css" scoped>
-input {
-  max-width: 90%;
-}
-button {
-  margin: 1%;
-}
 </style>

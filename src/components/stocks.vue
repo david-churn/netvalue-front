@@ -1,6 +1,6 @@
 <template>
   <div class="stocks">
-    <h3 class="center">{{ title }}</h3>
+    <h3>{{ title }}</h3>
     <div class="row">
       <div class="flex2 right">
         <div>Balance</div>
@@ -14,15 +14,15 @@
     <hr>
     <div v-for="(asset,index) in stocksAssets" :key="index">
       <div class="row">
-        <div class="flex2 label">
-          <div>Description:</div>
-          <div>Balance:</div>
-          <div>Shares:</div>
-          <div>Symbol:</div>
-          <div>Price:</div>
-          <div> at {{ asset.latestSource}}:</div>
-          <div>Company Name:</div>
-          <div>Annual Dividends:</div>
+        <div class="flex2 right">
+          <div class="in-text">Description:</div>
+          <div class="in-text">Balance:</div>
+          <div class="in-text">Shares:</div>
+          <div class="in-text">Symbol:</div>
+          <div class="in-text">Price:</div>
+          <div class="in-text"> at {{ asset.latestSource}}:</div>
+          <div class="in-text">Company Name:</div>
+          <div class="in-text">Annual Dividends:</div>
         </div>
         <div class="flex2">
           <div>
@@ -30,9 +30,9 @@
                :value="asset.description"
                @change="updateRow($event,asset,'description')">
           </div>
-          <div>{{ Number(asset.amount)        .toDecFormat(2,3,sepPt,decPt) }}</div>
+          <div class="in-text">{{ Number(asset.amount)        .toDecFormat(2,3,sepPt,decPt) }}</div>
           <div>
-            <input type="number" step=".000001" class="right"
+            <input type="number" step=".0001" class="right"
               :value="asset.shares"
               @change="updateRow($event,asset,'shares')">
           </div>
@@ -41,9 +41,9 @@
               :value="asset.symbol"
               @change="updateRow($event,asset,'symbol')">
           </div>
-          <div>{{ Number(asset.price).toDecFormat(2,3,sepPt,decPt) }}</div>
-          <div>{{ asset.latestTime}}</div>
-          <div>{{ asset.company }}</div>
+          <div class="in-text">{{ Number(asset.price).toDecFormat(2,3,sepPt,decPt) }}</div>
+          <div class="in-text">{{ asset.latestTime}}</div>
+          <div class="in-text">{{ asset.company }}</div>
           <div>
             <input type="number" step=".01" class="right"
               :value="asset.payment"
@@ -119,7 +119,6 @@ export default {
       this.$store.dispatch("deleteAsset", aID);
     },
     updateRow(e,asset,propStr) {
-      console.log(`updateRow=`,e);
       let updAsset = {
         id: asset.id,
         type: asset.type,
@@ -140,21 +139,17 @@ export default {
       if (propStr==="symbol") {
         if (updAsset.symbol) {
           let requestStr = this.$store.state.localUrlStr + this.$store.state.stockStr + this.$store.state.priceStr + encodeURIComponent(updAsset.symbol);
-          console.log(`requestStr=${requestStr}`);
           return axios.get(requestStr)
             .then ((resp) => {
-              console.log(resp.data);
-              updAsset.price = resp.data.latestPrice.toDecFormat(4,3,this.sepPt,this.decPt);
+              updAsset.price = resp.data.latestPrice;
               updAsset.latestSource = resp.data.latestSource;
               updAsset.latestTime =
               resp.data.latestTime;
               updAsset.company = resp.data.companyName;
               updAsset.amount = Number(resp.data.latestPrice * updAsset.shares).toFixed(2);
-              console.log(`unrounded ${updAsset.amount}=${resp.data.latestPrice}*${updAsset.shares}`);
               this.$store.dispatch("updateAsset", updAsset);
             })
             .catch ((error) => {
-              console.log(`post error=`,error);
               throw (error)
             });
         }
@@ -175,11 +170,4 @@ export default {
 </script>
 
 <style lang="css" scoped>
-input {
-  max-width: 90%;
-}
-.r90 {
-  max-width: 80%;
-  text-align: right;
-}
 </style>

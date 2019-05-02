@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="logbox">
+    <div class="box">
       <div id="fbui-auth"></div>
     </div>
   </div>
@@ -43,7 +43,4 @@ export default {
 </script>
 
 <style scoped>
-.logbox {
-  border: solid 1px black;
-}
 </style>
