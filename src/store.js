@@ -126,13 +126,15 @@ export default new Vuex.Store({
         })
     },
     fetchProfile(context,userObj) {
-      let fetchStr = this.state.localUrlStr + this.state.profileStr + "gid/" + userObj.uid;
-      console.log(fetchStr);
-      axios.get(fetchStr)
+      return new Promise((resolve) => {
+        let fetchStr = this.state.localUrlStr + this.state.profileStr + "gid/" + userObj.uid;
+        console.log(fetchStr);
+        axios.get(fetchStr)
         .then ((resp) => {
           if (!resp.data.errors) {
             console.log(resp.data);
             context.commit("fetchProfile",resp.data);
+            resolve();
             this.dispatch("readNetValue");
           }
           else {
@@ -142,7 +144,8 @@ export default new Vuex.Store({
         .catch ((error) => {
           console.log(`post error=`,error);
           throw (error)
-        });
+        })
+      })
     },
     insertProfile(context,personObj) {
       context.commit("insertProfile", personObj);

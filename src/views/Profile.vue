@@ -23,10 +23,18 @@
         <div class="in-text">Separator character:</div>
       </div>
       <div class="flex2">
-        <input type="text" required v-model="nickNm">
-        <input type="text" required v-model="emailStr">
-        <input type="text" maxLength=1 required v-model="decimalStr">
-        <input type="text" maxLength=1 required v-model="separatorStr">
+        <div>
+          <input type="text" required v-model="nickNm">
+        </div>
+        <div>
+          <input type="text" required v-model="emailStr">
+        </div>
+        <div>
+          <input type="text" maxLength=1 required v-model="decimalStr">
+        </div>
+        <div>
+          <input type="text" maxLength=1 required v-model="separatorStr">
+        </div>
       </div>
     </div>
     <button class="redbtn" type="button" @click="removeAll">Delete All</button>
@@ -68,6 +76,7 @@ export default {
     }
   },
   created () {
+    console.log(`created`);
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
         this.$store.dispatch("clearProfile");
@@ -76,15 +85,18 @@ export default {
       else {
         if (_.isEmpty(this.personProfile)) {
           this.$store.dispatch("fetchProfile",user)
+          .then(() => {
+            console.log(`dispatch profileObj=`,this.profileObj);
+            this.nickNm = this.profileObj.nickNm;
+            this.emailStr = this.profileObj.emailStr;
+            this.decimalStr = this.profileObj.decimalStr;
+            this.separatorStr = this.profileObj.separatorStr;
+            this.exampleNbr = Number( 123456789.12 ).toDecFormat(2,3,this.separatorStr,this.decimalStr);
+          })
         }
       this.gNameStr = user.displayName;
       }
     });
-    this.nickNm = this.profileObj.nickNm;
-    this.emailStr = this.profileObj.emailStr;
-    this.decimalStr = this.profileObj.decimalStr;
-    this.separatorStr = this.profileObj.separatorStr;
-    this.exampleNbr = Number( 123456789.12 ).toDecFormat(2,3,this.separatorStr,this.decimalStr);
   },
   computed: mapState (["profileObj"]),
   methods: {
@@ -110,18 +122,22 @@ export default {
 </script>
 
 <style scoped>
-div, input {
+div {
   margin: 0.2em;
   min-height: 1.5em;
 }
 .in-text {
-  margin-bottom: 0.25em;
-  margin-top: 0.4em;
+  margin-bottom: 0.2em;
+  line-height: 1.5em;
 }
 .redbtn {
-  background: red;
+  background: #dd2d4a;
   border: double 1px black;
+  color: #f0f0f0;
   font-weight: bold;
   padding: 0.5em;
+}
+.stay {
+  display: block;
 }
 </style>

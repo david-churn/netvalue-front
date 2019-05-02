@@ -37,7 +37,7 @@
               @change="updateRow($event, asset, 'payment')">
           </div>
           <div>
-            <input type="number" step=".0001" min="0" class="right"
+            <input type="number" step=".01" min="0" class="right"
               :value="asset.apr"
               @change="updateRow($event, asset, 'apr')">%
           </div>
