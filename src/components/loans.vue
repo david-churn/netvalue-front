@@ -2,11 +2,11 @@
   <div class="loans">
     <h3>{{ title }}</h3>
     <div class="row">
-      <div class="flex2 right">
+      <div class="flex1 right">
         <div>Balance</div>
         <div>{{ subtotalAmt }}</div>
       </div>
-      <div class="flex2 right">
+      <div class="flex1 right">
         <div>Monthly Payment</div>
         <div>{{ subtotalPayment }}</div>
       </div>
@@ -14,13 +14,13 @@
     <hr>
     <div v-for="(debt,index) in loansDebts" :key="index">
       <div class="row">
-        <div class="flex2 right">
+        <div class="flex1 right">
           <div class="in-text">Description:</div>
           <div class="in-text">Balance:</div>
           <div class="in-text">Monthly Payment:</div>
           <div class="in-text">Annual Interest:</div>
         </div>
-        <div class="flex2">
+        <div class="flex1">
           <div>
             <input type="text"
               :value="debt.description"

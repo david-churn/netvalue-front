@@ -8,17 +8,17 @@
     <hr>
     <div v-for="(asset,index) in otherAssets" :key="index">
       <div class="row">
-        <div class="flex2 right">
+        <div class="flex1 right">
           <div class="in-text">Description:</div>
           <div class="in-text">Balance:</div>
         </div>
-        <div class="flex2">
+        <div class="flex1">
           <div>
             <input type="text"
               v-show="asset.description!='Cash'"
               :value="asset.description"
               @change="updateRow($event,asset,'description')">
-            <div class="flex2 in-text"
+            <div class="flex1 in-text"
               v-show="asset.description=='Cash'">
               {{ asset.description }}
             </div>
@@ -107,8 +107,4 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.half {
-  max-width: 45%;
-  text-align: right;
-}
 </style>

@@ -9,8 +9,8 @@ import moment from "moment";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-// complains when store data updated outside mutations. Remove for production.
-  strict: true,
+// complains when store data updated outside mutations. Comment for production due to overhead.
+// strict: true,
   state: {
     companyStr: "company/",
     deleteStr: "delete",
@@ -20,12 +20,12 @@ export default new Vuex.Store({
     profileStr: "profile/",
     stockStr: "stock/",
 
-//  personID, createdAt, decimalStr, emailStr, gID, nickNm, separatorStr, updatedAt
-    profileObj: {},
 //  id, type, symbol, description, apr, payment, shares, price, amount
     assets: [],
 //  id, type, description, apr, payment, amount
-    debts: []
+    debts: [],
+//  personID, createdAt, decimalStr, emailStr, gID, nickNm, separatorStr, updatedAt
+    profileObj: {}
   },
   getters: {
     activeAssets(state) {
@@ -50,49 +50,14 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    clearProfile(context) {
+      context.commit("clearProfile");
+    },
     deleteAsset(context,id) {
       context.commit("deleteAsset", id);
     },
-    insertAsset(context,assetObj) {
-      let postStr = this.state.localUrlStr + this.state.netValueStr
-        + "asset/" + this.state.profileObj.personID
-        + "/" + encodeURIComponent(assetObj.type);
-      axios.post(postStr)
-        .then ((resp) => {
-          if (!resp.data.errors) {
-            assetObj.id = resp.data.assetID;
-            context.commit("insertAsset", assetObj);
-          }
-        })
-        .catch ((error) => {
-          throw error
-        });
-    },
-    updateAsset(context,assetObj) {
-        context.commit("updateAsset", assetObj);
-    },
     deleteDebt(context,id) {
       context.commit("deleteDebt", id);
-    },
-    insertDebt(context,debtObj) {
-      let postStr = this.state.localUrlStr + this.state.netValueStr
-        + "debt/" + this.state.profileObj.personID        + "/" + encodeURIComponent(debtObj.type);
-      axios.post(postStr)
-        .then ((resp) => {
-          if (!resp.data.errors) {
-            debtObj.id = resp.data.debtID;
-            context.commit("insertDebt", debtObj);
-          }
-        })
-        .catch ((error) => {
-          throw error
-        });
-    },
-    updateDebt(context,debtObj) {
-      context.commit("updateDebt", debtObj);
-    },
-    clearProfile(context) {
-      context.commit("clearProfile");
     },
     deleteProfile(context,personID) {
       let delStr = this.state.localUrlStr + this.state.profileStr + "deluser/" + personID;
@@ -122,14 +87,34 @@ export default new Vuex.Store({
         })
       })
     },
-    insertProfile(context,personObj) {
-      context.commit("insertProfile", personObj);
+    insertAsset(context,assetObj) {
+      let postStr = this.state.localUrlStr + this.state.netValueStr
+        + "asset/" + this.state.profileObj.personID
+        + "/" + encodeURIComponent(assetObj.type);
+      axios.post(postStr)
+        .then ((resp) => {
+          if (!resp.data.errors) {
+            assetObj.id = resp.data.assetID;
+            context.commit("insertAsset", assetObj);
+          }
+        })
+        .catch ((error) => {
+          throw error
+        });
     },
-    loadProfile(context,personObj) {
-      context.commit("loadProfile",personObj)
-    },
-    updateProfile(context,personObj) {
-      context.commit("updateProfile", personObj);
+    insertDebt(context,debtObj) {
+      let postStr = this.state.localUrlStr + this.state.netValueStr
+        + "debt/" + this.state.profileObj.personID        + "/" + encodeURIComponent(debtObj.type);
+      axios.post(postStr)
+        .then ((resp) => {
+          if (!resp.data.errors) {
+            debtObj.id = resp.data.debtID;
+            context.commit("insertDebt", debtObj);
+          }
+        })
+        .catch ((error) => {
+          throw error
+        });
     },
     readNetValue(context) {
       let requestStr = this.state.localUrlStr + this.state.netValueStr + "read/" + this.state.profileObj.personID;
@@ -152,34 +137,28 @@ export default new Vuex.Store({
         .catch ((error) => {
           throw (error);
         })
+    },
+    updateAsset(context,assetObj) {
+        context.commit("updateAsset", assetObj);
+    },
+    updateDebt(context,debtObj) {
+      context.commit("updateDebt", debtObj);
+    },
+    updateProfile(context,personObj) {
+      context.commit("updateProfile", personObj);
     }
   },
   mutations: {
+    clearProfile(state) {
+      state.profileObj = {};
+    },
     deleteAsset(state,delID) {
       let assetIdx = state.assets.map(asset => asset.id ).indexOf(delID);
       state.assets[assetIdx].type = state.deleteStr;
     },
-    insertAsset(state,assetObj) {
-      assetObj.description = assetObj.description==="Cash" ? "cash" : assetObj.description;
-      state.assets.push(assetObj);
-    },
-    updateAsset(state,updateObj) {
-      let assetIdx = _.findIndex(state.assets, obj => obj.id === updateObj.id);
-      state.assets.splice(assetIdx,1,updateObj);
-    },
     deleteDebt(state,delID) {
       let debtIdx = state.debts.map(debt => debt.id ).indexOf(delID);
       state.debts[debtIdx].type = state.deleteStr;
-    },
-    insertDebt(state,debtObj) {
-      state.debts.push(debtObj);
-    },
-    updateDebt(state,updateObj) {
-      let debtIdx = _.findIndex(state.debts, obj => obj.id === updateObj.id);
-      state.debts.splice(debtIdx,1,updateObj);
-    },
-    clearProfile(state) {
-      state.profileObj = {};
     },
     deleteProfile(state) {
       state.profile = {};
@@ -200,15 +179,25 @@ export default new Vuex.Store({
         separatorStr: personObj.separatorStr
       };
     },
-    insertProfile(state,personObj) {
-//! call the backend to set up new profile information and assign personID
-      let updStr = state.localUrlStr + state.profileStr + "adduser/" + personObj.gID;
-      axios.post(updStr, personObj)
-        .catch ((error) => {
-          throw error
-        })
+    insertAsset(state,assetObj) {
+      assetObj.description = assetObj.description==="Cash" ? "cash" : assetObj.description;
+      state.assets.push(assetObj);
     },
-// updates from the profile screen
+    insertDebt(state,debtObj) {
+      state.debts.push(debtObj);
+    },
+    readNetValue(state,netValueObj) {
+      state.assets = netValueObj.assets;
+      state.debts = netValueObj.debts;
+    },
+    updateAsset(state,updateObj) {
+      let assetIdx = _.findIndex(state.assets, obj => obj.id === updateObj.id);
+      state.assets.splice(assetIdx,1,updateObj);
+    },
+    updateDebt(state,updateObj) {
+      let debtIdx = _.findIndex(state.debts, obj => obj.id === updateObj.id);
+      state.debts.splice(debtIdx,1,updateObj);
+    },
     updateProfile(state,personObj) {
       state.profileObj.nickNm = personObj.nickNm;
       state.profileObj.emailStr = personObj.emailStr;
@@ -219,11 +208,6 @@ export default new Vuex.Store({
         .catch ((error) => {
           throw error
         })
-    },
-// read the asset information from the database.
-    readNetValue(state,netValueObj) {
-      state.assets = netValueObj.assets;
-      state.debts = netValueObj.debts;
     }
   }
 })

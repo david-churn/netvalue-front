@@ -1,8 +1,6 @@
 <template>
   <div class="home">
-    <div class="box">
-      <div id="fbui-auth"></div>
-    </div>
+    <div id="fbui-auth"></div>
   </div>
 </template>
 

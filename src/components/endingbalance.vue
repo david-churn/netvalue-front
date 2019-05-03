@@ -6,7 +6,7 @@
     <p>The calculation has a limit of 100 years.</p>
     <hr>
     <div class="row">
-      <div class="flex2 right">
+      <div class="flex1 right">
         <div class="in-text">Starting Balance:</div>
         <div class="in-text">Monthly Payment:</div>
         <div class="in-text">Annual Interest Rate:</div>
@@ -16,7 +16,7 @@
         <div>Earnings:</div>
         <div>Months:</div>
       </div>
-      <div class="flex2">
+      <div class="flex1">
         <div>
           <input type="number" step=".01" class="right" v-model="principleAmt">
         </div>
@@ -30,7 +30,7 @@
           <input type="number" step=".01" class="right" v-model="resultAmt">
         </div>
         <div>
-          <button type="button"           @click="calculateIt">calculate</button>          
+          <button type="button"           @click="calculateIt">calculate</button>
         </div>
         <div>{{ balanceAmt.toDecFormat(2,3,sepPt,decPt)}}</div>
         <div>{{ earningAmt.toDecFormat(2,3,sepPt,decPt)}}</div>

@@ -1,23 +1,32 @@
 <template>
   <div class="netvalue">
-    <h2 class="row">
-      <div class="flex2 right">{{ totalAmt }}</div>
-      <div class="flex2 left">{{ title }}</div>
-    </h2>
-    <div class="row">
-      <div class="flex2">
-        <button type="button"
-          @click="saveNetValue">Save</button>
+    <h2>{{ title}}</h2>
+    <div class="card">
+      <div class="row">
+        <div class="flex1 right">{{ subtotalAssetsAmt }}</div>
+        <div class="flex1 left">Assets</div>
       </div>
-      <div class="flex2 right">
-        <button type="button"
-          @click="resetNetValue">Reset</button>
+      <div class="row">
+        <div class="flex1 right">{{ subtotalDebtsAmt }}</div>
+        <div class="flex1 left">Debts</div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="flex1 right">{{ totalAmt }}</div>
+        <div class="flex1 left">Total Net Value</div>
+      </div>
+      <div class="row">
+        <div class="flex1">
+          <button type="button"
+            @click="saveNetValue">Save</button>
+        </div>
+        <div class="flex1 right">
+          <button type="button"
+            @click="resetNetValue">Reset</button>
+        </div>
       </div>
     </div>
-    <h2 class="row">
-      <div class="flex2 right">{{ subtotalAssetsAmt }}</div>
-      <div class="flex2 left">Assets</div>
-    </h2>
+    <h2>Assets</h2>
     <div class="card">
       <aSavings/>
     </div>
@@ -27,10 +36,7 @@
     <div class="card">
       <aOthers/>
     </div>
-    <h2 class="row">
-      <div class="flex2 right">{{ subtotalDebtsAmt }}</div>
-      <div class="flex2 left">Debts</div>
-    </h2>
+    <h2>Debts</h2>
     <div class="card">
       <dLoans/>
     </div>

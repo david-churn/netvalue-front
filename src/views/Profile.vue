@@ -1,43 +1,49 @@
 <template>
   <div class="profile">
     <h2>{{ title }}</h2>
-    <button type="button" @click="chgProf">Save Profile</button>
-    <div class="row">
-      <div class="flex2 right">
-        <div>Name:</div>
-        <div>Number Example:</div>
-        <div>Last Profile Change:</div>
+    <div>
+      <button type="button" @click="chgProf">Save Profile</button>
+    </div>
+    <div class="card">
+      <div class="row">
+        <div class="flex1 right">
+          <div>Name:</div>
+          <div>Number Example:</div>
+          <div>Last Profile Change:</div>
+        </div>
+        <div class="flex1">
+          <div>{{ gNameStr }}</div>
+          <div>{{ exampleNbr }}</div>
+          <div>{{ profileObj.updatedAt }}</div>
+        </div>
       </div>
-      <div class="flex2">
-        <div>{{ gNameStr }}</div>
-        <div>{{ exampleNbr }}</div>
-        <div>{{ profileObj.updatedAt }}</div>
+      <hr>
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Called By:</div>
+          <div class="in-text">Email Address:</div>
+          <div class="in-text">Decimal character:</div>
+          <div class="in-text">Separator character:</div>
+        </div>
+        <div class="flex1">
+          <div>
+            <input type="text" required v-model="nickNm">
+          </div>
+          <div>
+            <input type="text" required v-model="emailStr">
+          </div>
+          <div>
+            <input type="text" class="short-in" maxLength=1 required v-model="decimalStr">
+          </div>
+          <div>
+            <input type="text" class="short-in" maxLength=1 required v-model="separatorStr">
+          </div>
+        </div>
       </div>
     </div>
-    <hr>
-    <div class="row">
-      <div class="flex2 right">
-        <div class="in-text">Called By:</div>
-        <div class="in-text">Email Address:</div>
-        <div class="in-text">Decimal character:</div>
-        <div class="in-text">Separator character:</div>
-      </div>
-      <div class="flex2">
-        <div>
-          <input type="text" required v-model="nickNm">
-        </div>
-        <div>
-          <input type="text" required v-model="emailStr">
-        </div>
-        <div>
-          <input type="text" maxLength=1 required v-model="decimalStr">
-        </div>
-        <div>
-          <input type="text" maxLength=1 required v-model="separatorStr">
-        </div>
-      </div>
+    <div>
+      <button class="redbtn" type="button" @click="removeAll">Delete All</button>
     </div>
-    <button class="redbtn" type="button" @click="removeAll">Delete All</button>
   </div>
 </template>
 
@@ -120,11 +126,7 @@ export default {
 </script>
 
 <style scoped>
-.redbtn {
-  background: #dd2d4a;
-  border: double 1px black;
-  color: #f0f0f0;
-  font-weight: bold;
-  padding: 0.5em;
+.card {
+  max-width: 40em;
 }
 </style>

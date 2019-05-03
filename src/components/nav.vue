@@ -1,5 +1,8 @@
 <template lang="html">
   <div id="nav">
+    <div class="flex1 nav-box">
+      <img alt="David logo" class="logo" src="../assets/logo.png">
+    </div>
     <div class="flex1 nav-box">{{ todayStr }}</div>
     <div class="flex1 nav-box">
       <router-link to="/">Home</router-link>
@@ -71,6 +74,11 @@ export default {
     }
   }
 }
+.logo {
+  height: 1.25em;
+  width: auto;
+  margin: 0;
+}
 .nav-box {
   background: #c5efcb;
   border: solid 1px black;
@@ -83,6 +91,9 @@ export default {
 @media (min-width: 768px) {
   #nav {
     display: flex;
+  }
+  .logo {
+    height: 2em;
   }
 }
 

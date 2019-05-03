@@ -2,11 +2,11 @@
   <div class="stocks">
     <h3>{{ title }}</h3>
     <div class="row">
-      <div class="flex2 right">
+      <div class="flex1 right">
         <div>Balance</div>
         <div>{{ subtotalAmt }}</div>
       </div>
-      <div class="flex2 right">
+      <div class="flex1 right">
         <div>Annual Dividends</div>
         <div>{{ subtotalDividend }}</div>
       </div>
@@ -14,7 +14,7 @@
     <hr>
     <div v-for="(asset,index) in stocksAssets" :key="index">
       <div class="row">
-        <div class="flex2 right">
+        <div class="flex1 right">
           <div class="in-text">Description:</div>
           <div class="in-text">Balance:</div>
           <div class="in-text">Shares:</div>
@@ -24,7 +24,7 @@
           <div class="in-text">Company Name:</div>
           <div class="in-text">Annual Dividends:</div>
         </div>
-        <div class="flex2">
+        <div class="flex1">
           <div>
             <input type="text"
                :value="asset.description"
@@ -37,7 +37,7 @@
               @change="updateRow($event,asset,'shares')">
           </div>
           <div>
-            <input type="text"
+            <input type="text" class="short-in"
               :value="asset.symbol"
               @change="updateRow($event,asset,'symbol')">
           </div>

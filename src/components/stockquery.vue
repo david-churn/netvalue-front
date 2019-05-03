@@ -4,7 +4,7 @@
     <p>Look up information about a stock based upon its symbol.</p>
     <hr>
     <div class="row">
-      <div class="flex2 right">
+      <div class="flex1 right">
         <div class="in-text">Symbol:</div>
         <div>Price:</div>
         <div>at {{ stockObj.latestSource}}:</div>
@@ -13,7 +13,7 @@
         <div>Exchange:</div>
         <div>Sector: </div>
       </div>
-      <div class="flex2">
+      <div class="flex1">
         <div>
           <input type="text"
               v-model="stockObj.symbol"
