@@ -3,11 +3,11 @@
     <h3>{{ title }}</h3>
     <div class="row">
       <div class="flex1 right">
-        <div>Balance</div>
+        <div class="uline">Balance</div>
         <div>{{ subtotalAmt }}</div>
       </div>
       <div class="flex1 right">
-        <div>Monthly Payment</div>
+        <div class="uline">Monthly Payment</div>
         <div>{{ subtotalPayment }}</div>
       </div>
     </div>
@@ -16,9 +16,6 @@
       <div class="row">
         <div class="flex1 right">
           <div class="in-text">Description:</div>
-          <div class="in-text">Balance:</div>
-          <div class="in-text">Monthly Payment:</div>
-          <div class="in-text">Annual Interest:</div>
         </div>
         <div class="flex1">
           <div>
@@ -26,16 +23,37 @@
               :value="debt.description"
               @change="updateRow($event,debt,'description')">
           </div>
+        </div>
+      </div>          
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Balance:</div>
+        </div>
+        <div class="flex1">
           <div>
             <input type="number" step=".01" class="right"
               :value="debt.amount"
               @change="updateRow($event,debt,'amount')">
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Monthly Payment:</div>
+        </div>
+        <div class="flex1">
           <div>
             <input type="number" step=".01" class="right"
               v-model="debt.payment"
               @change="updateRow($event,debt,'payment')">
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Annual Interest:</div>
+        </div>
+        <div class="flex1">
           <div>
             <input type="number" step=".01" class="right"
               :value="debt.apr"

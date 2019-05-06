@@ -1,8 +1,5 @@
 <template lang="html">
   <div id="nav">
-    <div class="flex1 nav-box">
-      <img alt="David logo" class="logo" src="../assets/logo.png">
-    </div>
     <div class="flex1 nav-box">{{ todayStr }}</div>
     <div class="flex1 nav-box">
       <router-link to="/">Home</router-link>
@@ -20,7 +17,7 @@
       <span v-if="authorized">
         <button type="button" @click="logout">Sign Out</button>
       </span>
-      <span v-else>Sign In</span>
+      <span v-else>Please Sign In</span>
     </div>
   </div>
 </template>
@@ -74,26 +71,18 @@ export default {
     }
   }
 }
-.logo {
-  height: 1.25em;
-  width: auto;
-  margin: 0;
-}
 .nav-box {
   background: #c5efcb;
   border: solid 1px black;
   color: #2c3e50;
   margin: 0;
-  padding: 1%;
+  padding: 0.5em;
   text-align:center;
 }
 
 @media (min-width: 768px) {
   #nav {
     display: flex;
-  }
-  .logo {
-    height: 2em;
   }
 }
 

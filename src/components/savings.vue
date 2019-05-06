@@ -3,11 +3,11 @@
     <h3>{{ title }}</h3>
     <div class="row">
       <div class="flex1 right">
-        <div>Balance</div>
+        <div class="uline">Balance</div>
         <div>{{ subtotalAmt }}</div>
       </div>
       <div class="flex1 right">
-        <div>Monthly Contribution</div>
+        <div class="uline">Monthly Contribution</div>
         <div>{{ subtotalContrib }}</div>
       </div>
     </div>
@@ -16,9 +16,6 @@
       <div class="row">
         <div class="flex1 right">
           <div class="in-text">Description:</div>
-          <div class="in-text">Balance:</div>
-          <div class="in-text">Monthly Contribution:</div>
-          <div class="in-text">Annual Interest:</div>
         </div>
         <div class="flex1">
           <div>
@@ -26,16 +23,37 @@
               :value="asset.description"
               @change="updateRow($event, asset, 'description')">
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Balance:</div>
+        </div>
+        <div class="flex1">
           <div>
             <input type="number" step=".01" min="0" class="right"
               :value="asset.amount"
               @change="updateRow($event, asset,'amount')">
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Monthly Contribution:</div>
+        </div>
+        <div class="flex1">
           <div>
             <input type="number" step=".01" min="0" class="right"
               :value="asset.payment"
               @change="updateRow($event, asset, 'payment')">
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Annual Interest:</div>
+        </div>
+        <div class="flex1">
           <div>
             <input type="number" step=".01" min="0" class="right"
               :value="asset.apr"

@@ -5,7 +5,8 @@
       <h1>{{ title }} for {{ this.$store.state.profileObj.nickNm || "you"}}</h1>
       <router-view/>
     </div>
-    <footer>&copy; 2019</footer>
+    <footer>
+      <img alt="David logo" class="logo" src="./assets/logo.png"> &copy; 2019</footer>
   </div>
 </template>
 
@@ -82,6 +83,11 @@ input {
 .left {
   text-align: left;
 }
+.logo {
+  height: 1.25em;
+  width: auto;
+  margin: 0;
+}
 .redbtn {
   background: $redish;
   border: double 1px $blackish;
@@ -107,12 +113,12 @@ input {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     font-size: 1.5em;
 }
+.uline {
+  text-decoration:underline;
+}
 // responsive changes
 //  tablet sized
 @media (min-width: 768px) {
-  body {
-    background: lightgray;
-  }
   h1, h2, h3 {
     text-align: left;
   }
@@ -120,15 +126,16 @@ input {
     margin: 2em;
   }
   .card {
-    margin: 1em;
-    width: 30em;
     display: inline-block;
+    margin: 1em;
+    padding: 1em 2em;
+    width: 30em;
+  }
+  .logo {
+    height: 2em;
   }
 }
 //  pc sized
 @media (min-width: 1280px) {
-  body {
-    background: lightblue;
-  }
 }
 </style>

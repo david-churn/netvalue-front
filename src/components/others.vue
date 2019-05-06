@@ -2,7 +2,7 @@
   <div class="others">
     <h3>{{ title }}</h3>
     <div>
-      <div class="half">Balance</div>
+      <div class="half uline">Balance</div>
       <div class="half">{{ subtotalAmt }}</div>
     </div>
     <hr>
@@ -10,7 +10,6 @@
       <div class="row">
         <div class="flex1 right">
           <div class="in-text">Description:</div>
-          <div class="in-text">Balance:</div>
         </div>
         <div class="flex1">
           <div>
@@ -23,6 +22,13 @@
               {{ asset.description }}
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Balance:</div>
+        </div>
+        <div class="flex1">
           <div>
             <input  type="number" step=".01" class="right"
               :value="asset.amount"

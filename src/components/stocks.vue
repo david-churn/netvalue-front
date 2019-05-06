@@ -3,11 +3,11 @@
     <h3>{{ title }}</h3>
     <div class="row">
       <div class="flex1 right">
-        <div>Balance</div>
+        <div class="uline">Balance</div>
         <div>{{ subtotalAmt }}</div>
       </div>
       <div class="flex1 right">
-        <div>Annual Dividends</div>
+        <div class="uline">Annual Dividends</div>
         <div>{{ subtotalDividend }}</div>
       </div>
     </div>
@@ -16,13 +16,6 @@
       <div class="row">
         <div class="flex1 right">
           <div class="in-text">Description:</div>
-          <div class="in-text">Balance:</div>
-          <div class="in-text">Shares:</div>
-          <div class="in-text">Symbol:</div>
-          <div class="in-text">Price:</div>
-          <div class="in-text"> at {{ asset.latestSource}}:</div>
-          <div class="in-text">Company Name:</div>
-          <div class="in-text">Annual Dividends:</div>
         </div>
         <div class="flex1">
           <div>
@@ -30,20 +23,75 @@
                :value="asset.description"
                @change="updateRow($event,asset,'description')">
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Balance:</div>
+        </div>
+        <div class="flex1">
           <div class="in-text">{{ Number(asset.amount)        .toDecFormat(2,3,sepPt,decPt) }}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Shares:</div>
+        </div>
+        <div class="flex1">
           <div>
             <input type="number" step=".0001" class="right"
               :value="asset.shares"
               @change="updateRow($event,asset,'shares')">
           </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Symbol:</div>
+        </div>
+        <div class="flex1">
           <div>
             <input type="text" class="short-in"
               :value="asset.symbol"
               @change="updateRow($event,asset,'symbol')">
           </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Price:</div>
+        </div>
+        <div class="flex1">
           <div class="in-text">{{ Number(asset.price).toDecFormat(2,3,sepPt,decPt) }}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text"> at {{ asset.latestSource}}:</div>
+        </div>
+        <div class="flex1">
           <div class="in-text">{{ asset.latestTime}}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Company Name:</div>
+        </div>
+        <div class="flex1">
           <div class="in-text">{{ asset.company }}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Annual Dividends:</div>
+        </div>
+        <div class="flex1">
           <div>
             <input type="number" step=".01" class="right"
               :value="asset.payment"
