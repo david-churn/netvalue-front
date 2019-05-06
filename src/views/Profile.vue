@@ -8,12 +8,24 @@
       <div class="row">
         <div class="flex1 right">
           <div>Name:</div>
-          <div>Number Example:</div>
-          <div>Last Profile Change:</div>
         </div>
         <div class="flex1">
           <div>{{ gNameStr }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1 right">
+          <div>Number Example:</div>
+        </div>
+        <div class="flex1">
           <div>{{ exampleNbr }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1 right">
+          <div>Last Profile Change:</div>
+        </div>
+        <div class="flex1">
           <div>{{ profileObj.updatedAt }}</div>
         </div>
       </div>
@@ -21,22 +33,40 @@
       <div class="row">
         <div class="flex1 right">
           <div class="in-text">Called By:</div>
-          <div class="in-text">Email Address:</div>
-          <div class="in-text">Decimal character:</div>
-          <div class="in-text">Separator character:</div>
         </div>
         <div class="flex1">
           <div>
             <input type="text" required v-model="nickNm">
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Email Address:</div>
+        </div>
+        <div class="flex1">
           <div>
             <input type="text" required v-model="emailStr">
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Decimal character:</div>
+        </div>
+        <div class="flex1">
           <div>
             <input type="text" class="short-in" maxLength=1 required v-model="decimalStr">
           </div>
-          <div>
-            <input type="text" class="short-in" maxLength=1 required v-model="separatorStr">
+        </div>
+      </div>
+      <div class="row">
+        <div class="flex1 right">
+          <div class="in-text">Separator character:</div>
+        </div>
+        <div class="flex1">
+            <div>
+              <input type="text" class="short-in" maxLength=1 required v-model="separatorStr">
           </div>
         </div>
       </div>
