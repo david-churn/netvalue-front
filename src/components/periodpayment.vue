@@ -6,33 +6,69 @@
     <div class="row">
       <div class="flex1 right">
         <div class="in-text">Starting Balance:</div>
-        <div class="in-text">Monthly Payment:</div>
-        <div class="in-text">Annual Interest Rate:</div>
-        <div class="in-text">Months:</div>
-        <div class="in-text">&gt;&gt;&gt;</div>
-        <div>Ending Balance:</div>
-        <div>Earnings:</div>
       </div>
       <div class="flex1">
         <div>
           <input type="number" step=".01" class="right" v-model="principleAmt">
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div class="in-text">Monthly Payment:</div>
+      </div>
+      <div class="flex1">
         <div>
           <input type="number" step=".01" class="right" v-model="paymentAmt">
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div class="in-text">Annual Interest Rate:</div>
+      </div>
+      <div class="flex1">
         <div>
           <input type="number" step=".01" class="right" v-model="APR">%
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div class="in-text">Months:</div>
+      </div>
+      <div class="flex1">
         <div>
           <input type="number" class="right"
             v-model="periodQty">
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div class="in-text">&gt;&gt;&gt;</div>
+      </div>
+      <div class="flex1">
         <div>
           <button type="button"
             @click="calculateIt">calculate
           </button>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div>Ending Balance:</div>
+      </div>
+      <div class="flex1">
         <div>{{ balanceAmt.toDecFormat(2,3,this.sepPt,this.decPt)}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div>Earnings:</div>
+      </div>
+      <div class="flex1">
         <div>{{ earningAmt.toDecFormat(2,3,this.sepPt,this.decPt)}}</div>
       </div>
     </div>

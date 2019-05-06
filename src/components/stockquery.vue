@@ -6,24 +6,60 @@
     <div class="row">
       <div class="flex1 right">
         <div class="in-text">Symbol:</div>
-        <div>Price:</div>
-        <div>at {{ stockObj.latestSource}}:</div>
-        <div>Company Name:</div>
-        <div>Web Site:</div>
-        <div>Exchange:</div>
-        <div>Sector: </div>
       </div>
       <div class="flex1">
         <div>
-          <input type="text"
+          <input type="text" class="short-in"
               v-model="stockObj.symbol"
               @change="queryAPI">
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div>Price:</div>
+      </div>
+      <div class="flex1">
         <div>{{ stockObj.latestPrice }}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div>at {{ stockObj.latestSource}}:</div>
+      </div>
+      <div class="flex1">
         <div>{{ stockObj.latestTime }}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div>Company Name:</div>
+      </div>
+      <div class="flex1">
         <div>{{ stockObj.companyName }}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div>Web Site:</div>
+      </div>
+      <div class="flex1">
         <div>{{ stockObj.website}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div>Exchange:</div>
+      </div>
+      <div class="flex1">
         <div>{{ stockObj.exchange }}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div>Sector: </div>
+      </div>
+      <div class="flex1">
         <div>{{ stockObj.sector}}</div>
       </div>
     </div>

@@ -6,28 +6,64 @@
     <div class="row">
       <div class="flex1 right">
         <div class="in-text">Starting Balance:</div>
-        <div class="in-text">Annual Interest Rate:</div>
-        <div class="in-text">Months:</div>
-        <div class="in-text">&gt;&gt;&gt;</div>
-        <div>Monthly Payment:</div>
-        <div>Total Paid:</div>
-        <div>Interest Paid:</div>
       </div>
       <div class="flex1">
         <div>
           <input type="number" step=".01" class="right" v-model="principleAmt">
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div class="in-text">Annual Interest Rate:</div>
+      </div>
+      <div class="flex1">
         <div>
           <input type="number" step=".01" class="right" v-model="APR">%
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div class="in-text">Months:</div>
+      </div>
+      <div class="flex1">
         <div>
           <input type="number" class="right" v-model="periodQty">
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div class="in-text">&gt;&gt;&gt;</div>
+      </div>
+      <div class="flex1">
         <div>
           <button type="button"         @click="calculateIt">calculate</button>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div>Monthly Payment:</div>
+      </div>
+      <div class="flex1">
         <div>{{ paymentAmt.toDecFormat(2,3,sepPt,decPt)}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div>Total Paid:</div>
+      </div>
+      <div class="flex1">
         <div>{{ totalAmt.toDecFormat(2,3,sepPt,decPt)}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex1 right">
+        <div>Interest Paid:</div>
+      </div>
+      <div class="flex1">
         <div>{{ costAmt.toDecFormat(2,3,sepPt,decPt)}}</div>
       </div>
     </div>
