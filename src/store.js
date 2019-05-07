@@ -14,7 +14,7 @@ export default new Vuex.Store({
   state: {
     companyStr: "company/",
     deleteStr: "delete",
-    localUrlStr: "http://localhost:3000/",
+    localUrlStr: "https://thawing-cliffs-41068.herokuapp.com/",
     netValueStr: "nv/",
     priceStr: "price/",
     profileStr: "profile/",
