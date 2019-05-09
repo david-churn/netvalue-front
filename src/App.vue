@@ -5,8 +5,9 @@
       <h1>{{ title }} for {{ this.$store.state.profileObj.nickNm || "you"}}</h1>
       <router-view/>
     </div>
-    <footer>
-      <img alt="David logo" class="logo" src="./assets/logo.png"> &copy; 2019</footer>
+    <footer class="fix-bottom">
+      <img alt="David logo" class="logo" src="./assets/logo.png"> &copy; 2019
+    </footer>
   </div>
 </template>
 
@@ -40,25 +41,19 @@ $greenish: #c5efcb;
   -moz-osx-font-smoothing: grayscale;
   color: $blackish;
 }
-* {
-  box-sizing: border-box;
-}
 div {
   min-height: 1.5em;
-}
-footer {
-  border-top: solid 1px $blackish;
-  background: $greenish;
-  text-align: center;
 }
 h1, h2, h3 {
   text-align: center;
 }
 input {
-  max-width: 90%;
+  max-width: 80%;
+  width: 80%
 }
 .body-view {
-  margin: 1% 5%;
+  margin: 5%;
+  padding-bottom: 1em;
 }
 .box {
   border: solid 1px $blackish;
@@ -70,15 +65,28 @@ input {
   padding: 2%;
   vertical-align: top;
 }
+.fix-bottom {
+  border-top: solid 1px $blackish;
+  background: $greenish;
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+}
 .flex1 {
   flex: 1;
 }
 .half {
-  max-width: 45%;
+  max-width: 49%;
   text-align: right;
 }
 .in-text {
   line-height: 1.5em;
+}
+.io-btn {
+  background: $greenish;
+  font-weight: bold;
+  margin: 0 5%;
 }
 .left {
   text-align: left;
@@ -130,6 +138,9 @@ input {
     margin: 1em;
     padding: 1em 2em;
     width: 30em;
+  }
+  .io-btn {
+    margin: 0 2em;
   }
   .logo {
     height: 2em;
